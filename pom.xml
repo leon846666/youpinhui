@@ -281,13 +281,7 @@
 		<module>youpinhui-sellergoods-service</module>
 		<module>youpinhui-manager-web</module>
 		<module>youpinhui-shop-web</module>
-		<module>youpinhui-pojo</module>
-		<module>youpinhui-dao</module>
-		<module>youpinhui-common</module>
-		<module>youpinhui-sellergoods-interface</module>
-		<module>youpinhui-sellergoods-service</module>
-		<module>youpinhui-manager-web</module>
-		<module>youpinhui-shop-web</module>
+		
 	</modules>
   
 </project>
