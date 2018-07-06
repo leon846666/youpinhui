@@ -15,9 +15,10 @@
 	<script src="../plugins/angularjs/pagination.js"></script>
 	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
     <script src="../js/base_pagination.js"></script>
-	<script src="../js/service/brandService.js"></script>
-	<script src="../js/controller/brandController.js"></script>
+    <script src="../js/service/brandService.js"></script>
+    <script src="../js/controller/brandController.js"></script>
 	
+
 
     
 </head>
@@ -48,7 +49,8 @@
                                 </div>
                             </div>
                             <!--工具栏/-->
-								
+								name:<input ng-model="searchEntity.name"> firstChar<input ng-model="searchEntity.firstChar">
+								<button class="btn btn-default" ng-click="reloadList()">search</button>
 			                  <!--数据列表-->
 			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
 			                      <thead>
@@ -64,7 +66,7 @@
 			                      </thead>
 			                      <tbody>
 			                          <tr ng-repeat=" x in list">
-			                              <td><input  type="checkbox"  ></td>			                              
+			                              <td><input  type="checkbox"  ng-click="selectUpdate($event,x.id)" ></td>			                              
 				                          <td>{{x.id}}</td>
 									      <td>{{x.name}}</td>									     
 		                                  <td>{{x.firstChar}}</td>		                                 

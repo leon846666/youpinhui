@@ -19,5 +19,11 @@ public interface BrandService {
 	public void add(TbBrand brand);
 
 	public TbBrand findOne(long id);
+
+	public void update(TbBrand brand);
+
+	public void delete(Long[] ids);
+
+	public PageResult findPage(TbBrand brand, int page, int size);
 	
 }
