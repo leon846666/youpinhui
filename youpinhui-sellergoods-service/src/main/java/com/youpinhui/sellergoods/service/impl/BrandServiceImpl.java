@@ -18,6 +18,7 @@ import com.youpinhui.sellergoods.service.BrandService;
  *  Brand Interface implement class
  * @author Leon
  *
+ * Annotation service is using com.alibaba.dubbo.config.annotation.Service;
  */
 @Service
 public class BrandServiceImpl implements BrandService{
