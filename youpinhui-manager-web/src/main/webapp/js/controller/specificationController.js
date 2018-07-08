@@ -3,6 +3,9 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
+	//an entity contains specification and specificationOptionList
+	$scope.entity={specification:{},specificationOptionList:[]};
+	
     //test case , get all the data return a Json
 	$scope.findAll=function(){
 		specificationService.findAll().success(
@@ -34,7 +37,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	//save
 	$scope.save=function(){				
 		var serviceObject;			
-		if($scope.entity.id!=null){//if it contains an id
+		if($scope.entity.specification.id!=null){//if it contains an id
 			serviceObject=specificationService.update( $scope.entity ); //update  
 		}else{
 			serviceObject=specificationService.add( $scope.entity  );//add
@@ -75,6 +78,16 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 				$scope.paginationConf.totalItems=response.total;//update the search result
 			}			
 		);
+	}
+
+	
+	
+	$scope.addOption=function(){
+		$scope.entity.specificationOptionList.push({});
+	}
+
+	$scope.delete=function(index){
+		$scope.entity.specificationOptionList.splice(index,1);
 	}
     
 });	

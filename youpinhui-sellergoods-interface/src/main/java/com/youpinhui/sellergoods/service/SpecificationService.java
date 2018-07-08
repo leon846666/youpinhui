@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.pojo.TbSpecification;
+import com.youpinhui.pojogroup.Specification;
 
 /**
  * provider  Specification interface
@@ -28,7 +29,7 @@ public interface SpecificationService {
 	/**
 	 * Add
 	*/
-	public void add(TbSpecification specification);
+	public void add(Specification specification);
 	
 	
 	/**
@@ -42,7 +43,7 @@ public interface SpecificationService {
 	 * @param id
 	 * @return
 	 */
-	public TbSpecification findOne(Long id);
+	public Specification findOne(Long id);
 	
 	
 	/**

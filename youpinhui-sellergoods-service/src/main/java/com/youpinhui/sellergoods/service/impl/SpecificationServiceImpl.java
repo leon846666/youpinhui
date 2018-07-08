@@ -6,9 +6,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.mapper.TbSpecificationMapper;
+import com.youpinhui.mapper.TbSpecificationOptionMapper;
 import com.youpinhui.pojo.TbSpecification;
 import com.youpinhui.pojo.TbSpecificationExample;
 import com.youpinhui.pojo.TbSpecificationExample.Criteria;
+import com.youpinhui.pojo.TbSpecificationOption;
+import com.youpinhui.pojo.TbSpecificationOptionExample;
+import com.youpinhui.pojogroup.Specification;
 import com.youpinhui.sellergoods.service.SpecificationService;
 
 
@@ -23,6 +27,9 @@ public class SpecificationServiceImpl implements SpecificationService {
 
 	@Autowired
 	private TbSpecificationMapper specificationMapper;
+	
+	@Autowired
+	private TbSpecificationOptionMapper tbSpecificationOptionMapper;
 	
 	/**
 	 * find all specifications
@@ -46,8 +53,25 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 * Add
 	 */
 	@Override
-	public void add(TbSpecification specification) {
-		specificationMapper.insert(specification);		
+	public void add(Specification specification) {
+		//get tbSpecification in object specification
+		TbSpecification tbSpecification = specification.getSpecification();
+		// Insert	
+		specificationMapper.insert(tbSpecification);		
+		 
+		//get SpecificationOptionList in object specification
+		List<TbSpecificationOption> specificationOptionList = specification.getSpecificationOptionList();
+		
+		//foreach get every TbSpecificationOption object
+		for (TbSpecificationOption option : specificationOptionList) {
+			
+			//assign attribute id
+			option.setSpecId(tbSpecification.getId());
+			//insert
+			tbSpecificationOptionMapper.insert(option);
+			
+		}
+		
 	}
 
 	
@@ -65,8 +89,19 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 * @return
 	 */
 	@Override
-	public TbSpecification findOne(Long id){
-		return specificationMapper.selectByPrimaryKey(id);
+	public Specification findOne(Long id){
+		
+		Specification specification = new Specification();
+		TbSpecification tbSpecification = specificationMapper.selectByPrimaryKey(id);
+		specification.setSpecification(tbSpecification);
+		
+		TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+		com.youpinhui.pojo.TbSpecificationOptionExample.Criteria createCriteria = example.createCriteria();
+		createCriteria.andSpecIdEqualTo(id);
+		List<TbSpecificationOption> specificationOptionList = tbSpecificationOptionMapper.selectByExample(example);
+		System.out.println("size :"+specificationOptionList.size());
+		specification.setSpecificationOptionList(specificationOptionList);
+		return specification;
 	}
 
 	/**

@@ -9,6 +9,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
 import com.youpinhui.pojo.TbSpecification;
+import com.youpinhui.pojogroup.Specification;
 import com.youpinhui.sellergoods.service.SpecificationService;
 
 /**
@@ -49,7 +50,7 @@ public class SpecificationController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbSpecification specification){
+	public Result add(@RequestBody Specification specification){
 		try {
 			specificationService.add(specification);
 			return new Result(true, "add success");
@@ -81,7 +82,7 @@ public class SpecificationController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbSpecification findOne(Long id){
+	public Specification findOne(Long id){
 		return specificationService.findOne(id);		
 	}
 	
