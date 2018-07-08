@@ -11,7 +11,6 @@ app.service('specificationService',function($http){
 	}
 	//find one object
 	this.findOne=function(id){
-		alert("id : "+id);
 		return $http.get('../specification/findOne.do?id='+id);
 	}
 	//add 

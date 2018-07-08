@@ -1,5 +1,5 @@
  //Controller
-app.controller('specificationController' ,function($scope,$controller   ,specificationService){	
+app.controller('specificationController' ,function($scope,$controller,specificationService){	
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
@@ -56,7 +56,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	
 	 
 	//batch delete
-	$scope.dele=function(){			
+	$scope.dele=function(){		
 		//receive the selected id from checkbox 			
 		specificationService.dele( $scope.selectIds ).success(
 			function(response){
@@ -71,7 +71,8 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	$scope.searchEntity={};//define a search entity
 	
 	//search
-	$scope.search=function(page,rows){			
+	$scope.search=function(page,rows){	
+		alert($scope.searchEntity.specName)
 		specificationService.search(page,rows,$scope.searchEntity).success(
 			function(response){
 				$scope.list=response.rows;	
@@ -86,7 +87,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 		$scope.entity.specificationOptionList.push({});
 	}
 
-	$scope.delete=function(index){
+	$scope.deleTableRow=function(index){
 		$scope.entity.specificationOptionList.splice(index,1);
 	}
     

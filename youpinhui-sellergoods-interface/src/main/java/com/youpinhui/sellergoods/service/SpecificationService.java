@@ -35,7 +35,7 @@ public interface SpecificationService {
 	/**
 	 * update
 	 */
-	public void update(TbSpecification specification);
+	public void update(Specification specification);
 	
 
 	/**

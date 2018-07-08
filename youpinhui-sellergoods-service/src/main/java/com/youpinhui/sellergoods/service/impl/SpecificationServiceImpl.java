@@ -54,6 +54,7 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 */
 	@Override
 	public void add(Specification specification) {
+		
 		//get tbSpecification in object specification
 		TbSpecification tbSpecification = specification.getSpecification();
 		// Insert	
@@ -79,8 +80,35 @@ public class SpecificationServiceImpl implements SpecificationService {
 	 * update
 	 */
 	@Override
-	public void update(TbSpecification specification){
-		specificationMapper.updateByPrimaryKey(specification);
+	public void update(Specification specification){
+		
+		//get tbSpecification in object specification
+		TbSpecification tbSpecification = specification.getSpecification();
+		// update	
+		specificationMapper.updateByPrimaryKey(tbSpecification);		
+		
+		
+		
+		//delete the original data in table specification option 
+		
+		TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+		com.youpinhui.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+		criteria.andSpecIdEqualTo(tbSpecification.getId());
+		tbSpecificationOptionMapper.deleteByExample(example);
+		
+		//get SpecificationOptionList in object specification
+		
+		List<TbSpecificationOption> specificationOptionList = specification.getSpecificationOptionList();
+		
+		//foreach get every TbSpecificationOption object
+		for (TbSpecificationOption option : specificationOptionList) {
+			
+			//assign attribute id
+			option.setSpecId(tbSpecification.getId());
+			//insert again
+			tbSpecificationOptionMapper.insert(option);
+			
+		}
 	}	
 	
 	/**
@@ -110,7 +138,16 @@ public class SpecificationServiceImpl implements SpecificationService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
+
+			// 1. delete the specification
 			specificationMapper.deleteByPrimaryKey(id);
+			
+			// 2.delete the specificaiton options
+			TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+			com.youpinhui.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+			criteria.andSpecIdEqualTo(id);
+			tbSpecificationOptionMapper.deleteByExample(example);
+			
 		}		
 	}
 	
