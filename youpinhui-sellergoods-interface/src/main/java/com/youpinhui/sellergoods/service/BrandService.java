@@ -1,6 +1,7 @@
 package com.youpinhui.sellergoods.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.pojo.TbBrand;
@@ -62,5 +63,12 @@ public interface BrandService {
 	 * @return
 	 */
 	public PageResult findPage(TbBrand brand, int page, int size);
+	
+	
+	/**
+	 * 
+	 * return select2 dropdown menu data 
+	 */
+	public List<Map> selectOptionList();
 	
 }

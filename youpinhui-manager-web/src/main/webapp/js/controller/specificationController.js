@@ -90,5 +90,7 @@ app.controller('specificationController' ,function($scope,$controller,specificat
 	$scope.deleTableRow=function(index){
 		$scope.entity.specificationOptionList.splice(index,1);
 	}
+
+
     
 });	

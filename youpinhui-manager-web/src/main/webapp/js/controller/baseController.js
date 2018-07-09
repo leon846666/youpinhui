@@ -1,5 +1,5 @@
 app.controller('baseController',function($scope){
-	 
+    $scope.brandList={data:[{id:1,text:'联想'},{id:2,text:'华为'},{id:3,text:'小米'}]};
     $scope.selectIds=[];
     $scope.searchEntity={};
 

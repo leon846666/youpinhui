@@ -1,5 +1,6 @@
 package com.youpinhui.sellergoods.service;
 import java.util.List;
+import java.util.Map;
 
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.pojo.TbSpecification;
@@ -62,5 +63,12 @@ public interface SpecificationService {
 	 * @return
 	 */
 	public PageResult findPage(TbSpecification specification, int pageNum,int pageSize);
+
+	
+	/**
+	 * 
+	 *  return select2 dropdown menu data 
+	 */
+	public List<Map> selectOptionList();
 	
 }

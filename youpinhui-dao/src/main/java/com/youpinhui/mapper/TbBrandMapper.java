@@ -5,6 +5,8 @@ import com.youpinhui.pojo.TbBrand;
 import com.youpinhui.pojo.TbBrandExample;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbBrandMapper {
@@ -29,4 +31,6 @@ public interface TbBrandMapper {
     int updateByPrimaryKeySelective(TbBrand record);
 
     int updateByPrimaryKey(TbBrand record);
+    
+    List<Map> selectOptionList();
 }

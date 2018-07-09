@@ -1,6 +1,7 @@
 package com.youpinhui.manager.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,6 +80,13 @@ public class BrandController {
 	public PageResult search(@RequestBody TbBrand brand, int page,int size) {
 		
 		return brandService.findPage(brand,page, size);
+	}
+	
+	
+	@RequestMapping("/selectOptionList")
+	public List<Map> selectOptionList() {
+		
+		return brandService.selectOptionList();
 	}
 	
 	
