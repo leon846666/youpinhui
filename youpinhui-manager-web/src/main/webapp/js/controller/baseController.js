@@ -1,5 +1,5 @@
 app.controller('baseController',function($scope){
-    $scope.brandList={data:[{id:1,text:'联想'},{id:2,text:'华为'},{id:3,text:'小米'}]};
+  
     $scope.selectIds=[];
     $scope.searchEntity={};
 
@@ -23,6 +23,21 @@ app.controller('baseController',function($scope){
           var index= $scope.selectIds.indexOf(id);
           $scope.selectIds.splice(index,1);
         }
+    }
+
+    $scope.jsonToString=function(jsonString,key){
+
+        var json = JSON.parse(jsonString);
+        var value="";
+        for (let i = 0; i < json.length; i++) {
+          if(i>0){
+              value+=","
+          }
+            value+=json[i][key];
+        }
+
+        return value;
+
     }
        
 	

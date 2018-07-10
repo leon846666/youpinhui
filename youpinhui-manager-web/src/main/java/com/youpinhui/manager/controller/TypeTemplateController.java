@@ -1,4 +1,5 @@
 package com.youpinhui.manager.controller;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,10 +52,10 @@ public class TypeTemplateController {
 	public Result add(@RequestBody TbTypeTemplate typeTemplate){
 		try {
 			typeTemplateService.add(typeTemplate);
-			return new Result(true, "增加成功");
+			return new Result(true, "add success");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "增加失败");
+			return new Result(false, "add failed");
 		}
 	}
 	
@@ -67,10 +68,10 @@ public class TypeTemplateController {
 	public Result update(@RequestBody TbTypeTemplate typeTemplate){
 		try {
 			typeTemplateService.update(typeTemplate);
-			return new Result(true, "修改成功");
+			return new Result(true, " update success");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "修改失败");
+			return new Result(false, " update failed");
 		}
 	}	
 	
@@ -91,16 +92,20 @@ public class TypeTemplateController {
 	 */
 	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
+		
+		List aList = new ArrayList<>();
+		aList.iterator();
+		
 		try {
 			typeTemplateService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "delete success"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "删除失败");
+			return new Result(false, "delete failed");
 		}
 	}
 	
-	/**
+		/**
 	 * fuzzy search 
 	 *  if the object is not null, get the parameter from it as the search condition.
 	 * @param brand

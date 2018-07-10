@@ -28,7 +28,11 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 	$scope.findOne=function(id){				
 		typeTemplateService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;	
+				$scope.entity.brandIds=JSON.parse($scope.entity.brandIds);		
+				$scope.entity.specIds=JSON.parse($scope.entity.specIds);	
+				$scope.entity.customAttributeItems=JSON.parse($scope.entity.customAttributeItems);	
+				
 			}
 		);				
 	}
@@ -95,5 +99,15 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 			}
 		)
 	}
-    
+
+	//add an row 
+	$scope.addTableRow=function(){
+		$scope.entity.customAttributeItems.push({});
+	}
+
+	//delete an row 
+	$scope.deleteRow=function(index){
+		$scope.entity.customAttributeItems.splice(index,1);
+	}
+	
 });	
