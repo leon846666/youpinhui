@@ -72,7 +72,7 @@ app.controller('specificationController' ,function($scope,$controller,specificat
 	
 	//search
 	$scope.search=function(page,rows){	
-		alert($scope.searchEntity.specName)
+		
 		specificationService.search(page,rows,$scope.searchEntity).success(
 			function(response){
 				$scope.list=response.rows;	

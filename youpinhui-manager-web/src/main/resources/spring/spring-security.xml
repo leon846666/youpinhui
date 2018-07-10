@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- intercept rules -->
+	<http pattern="/*.html" security="none"></http>
+	<http pattern="/css/**" security="none"></http>
+	<http pattern="/img/**" security="none"></http>
+	<http pattern="/js/**" security="none"></http>
+	<http pattern="/plugins/**" security="none"></http>
+	
+	<http use-expressions="false">
+		<!-- User must have the role of ROLE_ADMIN to visit the root &it's sub resources -->
+		<intercept-url pattern="/**" access="ROLE_ADMIN" />
+		<!-- form login  -->
+		<form-login  login-page="/login.html" default-target-url="/admin/index.html"
+		 authentication-failure-url="/login.html" always-use-default-target="true" />	
+		<csrf disabled="true"></csrf>
+		
+		<!-- without this couldn't use iframe -->
+		<headers>
+			<frame-options policy="SAMEORIGIN"></frame-options>
+		</headers>
+		<!-- user log out ,clear the session -->
+		<logout />
+	</http>
+
+	<!-- authentication-manager -->
+	<authentication-manager> 
+		<authentication-provider>
+			<user-service>
+				<user name="admin" password="123456" authorities="ROLE_ADMIN"/>
+				<user name="admin2" password="654321" authorities="ROLE_ADMIN"/>
+				
+			</user-service>		
+		</authentication-provider>	
+	</authentication-manager>
+</beans:beans>
