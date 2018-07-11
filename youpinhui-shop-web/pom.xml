@@ -78,9 +78,14 @@
 		<artifactId>servlet-api</artifactId>		
 		<scope>provided</scope>
 	</dependency>
-  
 
-  </dependencies>
+
+	<dependency>
+		<groupId>com.youpinhui</groupId>
+		<artifactId>youpinhui-sellergoods-interface</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+    </dependencies>
   
   
     <build>  
