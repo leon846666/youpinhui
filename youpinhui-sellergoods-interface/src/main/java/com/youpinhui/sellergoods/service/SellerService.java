@@ -43,14 +43,14 @@ public interface SellerService {
 	 * @param id
 	 * @return
 	 */
-	public TbSeller findOne(Long id);
+	public TbSeller findOne(String id);
 	
 	
 	/**
 	 * batch delete
 	 * @param ids
 	 */
-	public void delete(Long [] ids);
+	public void delete(String [] ids);
 
 	/**
 	 * fuzzy search 

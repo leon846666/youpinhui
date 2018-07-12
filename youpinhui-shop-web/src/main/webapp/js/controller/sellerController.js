@@ -50,6 +50,20 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 			}		
 		);				
 	}
+		//add( seller settlement application) 
+		$scope.add=function(){				
+			alert('asd');		
+			sellerService.add( $scope.entity  ).success(
+				function(response){
+					if(response.success){
+						location.href="shoplogin.html";
+					}else{
+						alert(response.message);
+					}
+				}		
+			);				
+		}
+		
 	
 	 
 	//batch delete
