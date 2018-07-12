@@ -6,6 +6,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.youpinhui.entity.PageResult;
+import com.youpinhui.entity.Result;
 import com.youpinhui.mapper.TbSellerMapper;
 import com.youpinhui.pojo.TbSeller;
 import com.youpinhui.pojo.TbSellerExample;
@@ -168,6 +169,15 @@ public class SellerServiceImpl implements SellerService {
 		
 		Page<TbSeller> page= (Page<TbSeller>)sellerMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
+	}
+
+	@Override
+	public void updateStatus(String sellerId, String status) {
+		// TODO Auto-generated method stub
+		TbSeller tbSeller = sellerMapper.selectByPrimaryKey(sellerId);
+		tbSeller.setStatus(status);
+		sellerMapper.updateByPrimaryKey(tbSeller);
+		
 	}
 	
 }

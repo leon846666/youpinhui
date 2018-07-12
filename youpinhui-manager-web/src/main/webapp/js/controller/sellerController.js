@@ -83,7 +83,7 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 	
 	//search
 	$scope.search=function(page,rows){		
-		alert("aaaaa")	
+	
 		sellerService.search(page,rows,$scope.searchEntity).success(
 			function(response){
 				$scope.list=response.rows;	
@@ -91,5 +91,20 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 			}			
 		);
 	}
+
+	//updateStatus
+	$scope.updateStatus=function(sellerId,status){		
+	
+		sellerService.updateStatus(sellerId,status).success(
+			function(response){
+				if(response.success){
+					$scope.reloadList();
+				}else{
+					alert(response.message);
+				}
+			}			
+		);
+	}
+    
     
 });	

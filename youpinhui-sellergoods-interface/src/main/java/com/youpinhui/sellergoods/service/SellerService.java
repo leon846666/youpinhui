@@ -2,6 +2,7 @@ package com.youpinhui.sellergoods.service;
 import java.util.List;
 
 import com.youpinhui.entity.PageResult;
+import com.youpinhui.entity.Result;
 import com.youpinhui.pojo.TbSeller;
 
 
@@ -60,5 +61,16 @@ public interface SellerService {
 	 * @return
 	 */
 	public PageResult findPage(TbSeller seller, int pageNum,int pageSize);
+	
+	/**
+	 * update Seller status 
+	 * 
+	 * @param sellerId selected seller's id
+	 * @param status  status to change
+	 * 	
+	 */
+	public void updateStatus( String sellerId,String status);
+	
+	
 	
 }

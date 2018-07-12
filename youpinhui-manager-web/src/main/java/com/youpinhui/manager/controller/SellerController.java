@@ -116,4 +116,18 @@ public class SellerController {
 	}
 
 
+	@RequestMapping("/updateStatus")
+	public Result updateStatus(String sellerId, String status  ){
+		try {
+			sellerService.updateStatus(sellerId, status);
+			return new Result(true,"update success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false,"update failed");
+		}
+		
+	}
+
+
 }
