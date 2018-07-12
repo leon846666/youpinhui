@@ -1,4 +1,4 @@
-package com.youpinhui.shop.controller;
+package com.youpinhui.manager.controller;
 
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class SellerController {
 	private SellerService sellerService;
 	
 	/**
-	 * 返回全部列表
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -36,7 +36,7 @@ public class SellerController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * pagination
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -45,7 +45,7 @@ public class SellerController {
 	}
 	
 	/**
-	 * 增加
+	 * add 
 	 * @param seller
 	 * @return
 	 */
@@ -53,7 +53,7 @@ public class SellerController {
 	public Result add(@RequestBody TbSeller seller){
 		try {
 			sellerService.add(seller);
-			return new Result(true, "增加成功");
+			return new Result(true, "add success");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, "增加失败");
@@ -61,7 +61,7 @@ public class SellerController {
 	}
 	
 	/**
-	 * 修改
+	 * update
 	 * @param seller
 	 * @return
 	 */
@@ -69,15 +69,15 @@ public class SellerController {
 	public Result update(@RequestBody TbSeller seller){
 		try {
 			sellerService.update(seller);
-			return new Result(true, "修改成功");
+			return new Result(true, "update success");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "修改失败");
+			return new Result(false, "update failed");
 		}
 	}	
 	
 	/**
-	 * 获取实体
+	 * get one by id
 	 * @param id
 	 * @return
 	 */
@@ -87,7 +87,7 @@ public class SellerController {
 	}
 	
 	/**
-	 * 批量删除
+	 * batch delete 
 	 * @param ids
 	 * @return
 	 */
@@ -95,15 +95,16 @@ public class SellerController {
 	public Result delete(String [] ids){
 		try {
 			sellerService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "delete success"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "删除失败");
+			return new Result(false, "delete failed");
 		}
 	}
 	
 		/**
-	 * 查询+分页
+	 * fuzzy search
+	 * if the object is not null, get the parameter from it as the search condition.
 	 * @param brand
 	 * @param page
 	 * @param rows
@@ -115,5 +116,4 @@ public class SellerController {
 	}
 
 
-	
 }
