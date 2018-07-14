@@ -51,6 +51,7 @@ public class ItemCatController {
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbItemCat itemCat){
 		try {
+			System.out.println("inside item save!");
 			itemCatService.add(itemCat);
 			return new Result(true, " add success");
 		} catch (Exception e) {

@@ -70,5 +70,7 @@ app.controller("brandController",function($scope,$controller,$http,brandService)
                     $scope.paginationConf.totalItems=response.total;
                 })
     }
+
+    
 })
 
