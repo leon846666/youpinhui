@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.pojo.TbGoods;
+import com.youpinhui.pojogroup.Goods;
 
 
 /**
@@ -29,7 +30,7 @@ public interface GoodsService {
 	/**
 	 * Add
 	*/
-	public void add(TbGoods goods);
+	public void add(Goods goods);
 	
 	
 	/**

@@ -10,6 +10,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
 import com.youpinhui.pojo.TbGoods;
+import com.youpinhui.pojogroup.Goods;
 import com.youpinhui.sellergoods.service.GoodsService;
 
 
@@ -44,21 +45,7 @@ public class GoodsController {
 		return goodsService.findPage(page, rows);
 	}
 	
-	/**
-	 * add
-	 * @param goods
-	 * @return
-	 */
-	@RequestMapping("/add")
-	public Result add(@RequestBody TbGoods goods){
-		try {
-			goodsService.add(goods);
-			return new Result(true, "add success");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new Result(false, "add failed");
-		}
-	}
+	
 	
 	/**
 	 *  update

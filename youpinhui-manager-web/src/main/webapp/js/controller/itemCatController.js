@@ -35,7 +35,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	$scope.save=function(){				
 		var serviceObject; 				
 		if($scope.entity.id!=null){//if it contains an id
-			alert("update")
+		//	alert("update")
 			serviceObject=itemCatService.update( $scope.entity ); //update   
 		}else{
 			$scope.entity.parentId=$scope.parentId;
@@ -58,10 +58,11 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	//batch delete
 	$scope.dele=function(){			
 		//receive the selected id from checkbox 		
+		//alert($scope.selectIds)
 		itemCatService.dele( $scope.selectIds ).success(
 			function(response){
 				if(response.success){
-					$scope.reloadList();//reload page
+					$scope.findByParentId($scope.parentId);//reload page
 					$scope.selectIds=[];
 				}						
 			}		

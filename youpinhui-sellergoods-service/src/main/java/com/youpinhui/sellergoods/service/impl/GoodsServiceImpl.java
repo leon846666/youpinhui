@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sun.tools.classfile.Opcode.Set;
 import com.youpinhui.entity.PageResult;
+import com.youpinhui.mapper.TbGoodsDescMapper;
 import com.youpinhui.mapper.TbGoodsMapper;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbGoodsExample;
 import com.youpinhui.pojo.TbGoodsExample.Criteria;
+import com.youpinhui.pojogroup.Goods;
 import com.youpinhui.sellergoods.service.GoodsService;
 
 
@@ -23,6 +26,8 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	private TbGoodsMapper goodsMapper;
+	@Autowired
+	private TbGoodsDescMapper goodsDescMapper;
 	
 	/**
 	 * find all
@@ -46,8 +51,13 @@ public class GoodsServiceImpl implements GoodsService {
 	 * Add
 	 */
 	@Override
-	public void add(TbGoods goods) {
-		goodsMapper.insert(goods);		
+	public void add(Goods goods) {
+		
+		goods.getGoods().setAuditStatus("0");// status of new created goods is 0;
+		goodsMapper.insert(goods.getGoods());// insert  goods SPU info
+		
+		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId()); // set the goodsDesc ID by good id.
+		goodsDescMapper.insert(goods.getGoodsDesc());
 	}
 
 	

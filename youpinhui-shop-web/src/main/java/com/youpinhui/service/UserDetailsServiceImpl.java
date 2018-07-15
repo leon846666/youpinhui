@@ -24,6 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public void setSellerService(SellerService sellerService) {
 		this.sellerService = sellerService;
 	}
+	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
