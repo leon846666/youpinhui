@@ -1,5 +1,5 @@
  //Controller
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller   ,goodsService,uploadService){	
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
@@ -93,5 +93,26 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}			
 		);
 	}
+
+	$scope.uploadImage=function(){
+		uploadService.uploadImage().success(
+			function(response){
+				if(response.success){
+					$scope.image_entity.url=response.message; 
+				}else{
+					alert(response.message)
+				}
+			}
+		)
+	}
+	$scope.entity={goods:{},goodsDesc:{itemImages:[]} }
+	$scope.add_images=function(){
+		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
+	}
+
+	$scope.deleImages=function(index){
+		$scope.entity.goodsDesc.itemImages.splice(index,1);
+	}
+
     
 });	
