@@ -28,13 +28,13 @@
 	<script src="../js/controller/baseController.js"></script>
 	<script src="../js/controller/goodsController.js"></script>
 	<script src="../js/service/uploadService.js"></script>
- 
+	<script src="../js/service/itemCatService.js"></script>
 	
     
     
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="youpinhui" ng-controller="goodsController" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="youpinhui" ng-controller="goodsController" ng-init="findItemCate()">
 
             <!-- 正文区域 -->
             <section class="content">
@@ -73,17 +73,17 @@
 		                           	  	<table>
 		                           	  		<tr>
 		                           	  			<td>
-		                           	  				<select class="form-control" >														
+		                           	  				<select class="form-control" ng-model="entity.goods.categort1Id" ng-options="item.id as item.name for item in itemCateList1" >														
 		                           	  				</select>
 		                              			</td>
 		                              			<td>
-		                           	  				<select class="form-control select-sm" ></select>
+		                           	  				<select class="form-control select-sm" ng-model="entity.goods.categort2Id" ng-options="item.id as item.name for item in itemCateList2" ></select>
 		                              			</td>
 		                              			<td>
-		                           	  				<select class="form-control select-sm" ></select>
+		                           	  				<select class="form-control select-sm"   ng-model="entity.goods.categort3Id" ng-options="item.id as item.name for item in itemCateList3"></select>
 		                              			</td>
 		                              			<td>
-		                           	  				模板ID:19
+		                           	  				{{entity.goods.typeTemplateId}}
 		                              			</td>
 		                           	  		</tr>
 		                           	  	</table>

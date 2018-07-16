@@ -1,5 +1,5 @@
  //Controller
-app.controller('goodsController' ,function($scope,$controller   ,goodsService,uploadService){	
+app.controller('goodsController' ,function($scope,$controller   ,goodsService,uploadService,itemCatService){	
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
@@ -114,5 +114,46 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 		$scope.entity.goodsDesc.itemImages.splice(index,1);
 	}
 
-    
-});	
+	$scope.findItemCate=function(){
+		itemCatService.findByParentId(0).success(
+			function(response){
+				$scope.itemCateList1 = response;
+			}
+		)
+	}
+
+	// get the level2  itemCategory
+	$scope.$watch("entity.goods.categort1Id",function(newValue,oldValue){
+		$scope.itemCateList3={};
+		$scope.entity.goods.typeTemplateId=null;
+		itemCatService.findByParentId(newValue).success(
+			function(response){
+				$scope.itemCateList2 = response;
+			}
+		)
+	}
+	)	
+
+	//get the level 3 item Category
+	$scope.$watch("entity.goods.categort2Id",function(newValue,oldValue){
+		$scope.entity.goods.typeTemplateId=null;
+		itemCatService.findByParentId(newValue).success(
+			function(response){
+				$scope.itemCateList3 = response;
+			}
+		)
+	}
+	)	
+		//get the template id from the selected level3category 
+	$scope.$watch("entity.goods.categort3Id",function(newValue,oldValue){
+		itemCatService.findOne(newValue).success(
+			function(response){
+				$scope.entity.goods.typeTemplateId=response.typeId;
+			}
+		)
+		
+	}
+	)
+
+
+})
