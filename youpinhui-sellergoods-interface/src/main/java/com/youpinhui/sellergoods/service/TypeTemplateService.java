@@ -65,6 +65,8 @@ public interface TypeTemplateService {
 
 	public List<Map> selectOptionList();
 	
-
+	
+	//get the specification list by the type_template id;
+	public List<Map> findSpecList(Long id);
 	
 }

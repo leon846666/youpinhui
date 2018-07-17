@@ -3,11 +3,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.JsonExpectationsHelper;
+
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.youpinhui.entity.PageResult;
+import com.youpinhui.mapper.TbSpecificationMapper;
+import com.youpinhui.mapper.TbSpecificationOptionMapper;
 import com.youpinhui.mapper.TbTypeTemplateMapper;
+import com.youpinhui.pojo.TbSpecificationExample;
+import com.youpinhui.pojo.TbSpecificationOption;
+import com.youpinhui.pojo.TbSpecificationOptionExample;
 import com.youpinhui.pojo.TbTypeTemplate;
 import com.youpinhui.pojo.TbTypeTemplateExample;
 import com.youpinhui.pojo.TbTypeTemplateExample.Criteria;
@@ -118,5 +126,36 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		public List<Map> selectOptionList() {
 			// TODO Auto-generated method stub
 			return typeTemplateMapper.selectOptionList();
+		}
+		
+		// 4. DI the TbspecificationMapper 	
+		
+		@Autowired
+		private TbSpecificationOptionMapper specificationOptionMapper;
+
+		@Override
+		public List<Map> findSpecList(Long id) {
+			
+			// 1. get the typeTemplate
+			TbTypeTemplate typeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
+			
+			// 2. get the typeTemlate spec_ids
+			//  and convert into list 
+			List<Map> list = JSON.parseArray(typeTemplate.getSpecIds(), Map.class);
+			
+			// 3. iterator this list
+			for (Map map : list) {
+				Integer specId =(Integer) map.get("id");
+				
+			// 5. search the id
+				TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+				com.youpinhui.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+				criteria.andSpecIdEqualTo(new Long(specId));
+				List<TbSpecificationOption> options = specificationOptionMapper.selectByExample(example);
+				
+				map.put("options", options);
+			}
+			
+			return list;
 		}
 }

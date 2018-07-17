@@ -169,9 +169,18 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 				//alert(	$scope.typeTemplate.customAttributeItems);
 			}
 		)
+
+		typeTemplateService.findSpecList($scope.entity.goods.typeTemplateId).success(
+			function(response){
+				$scope.specList= response;
+				
+			}
+		)
 			
 	}
 	)
+
+
 
 
 })
