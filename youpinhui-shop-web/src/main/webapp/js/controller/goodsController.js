@@ -161,10 +161,12 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	
 		typeTemplateService.findOne(newValue).success(
 			function(response){
-				alert(newValue);
+				//alert(newValue);
 				$scope.typeTemplate=response;
-				alert($scope.typeTemplate.brandIds);
+				console.log($scope.typeTemplate);
 				$scope.typeTemplate.brandIds=JSON.parse($scope.typeTemplate.brandIds);
+				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.typeTemplate.customAttributeItems);
+				//alert(	$scope.typeTemplate.customAttributeItems);
 			}
 		)
 			

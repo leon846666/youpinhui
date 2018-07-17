@@ -16,7 +16,7 @@ public class UploadController {
 	
 	@RequestMapping("/upload")
 	public Result upload(MultipartFile file) {
-		System.out.println("inside of upload~");
+		//System.out.println("inside of upload~");
 	String originalFilename = file.getOriginalFilename();
 	String extName = originalFilename.substring(originalFilename.lastIndexOf('.')+1);
 		try {
