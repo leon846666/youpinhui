@@ -198,19 +198,17 @@
 		                                <div ng-repeat=" pojo in specList">
 			                                <div class="col-md-2 title">{{pojo.text}}</div>
 					                        <div class="col-md-10 data">
-					                               
 					                            <span ng-repeat="option in pojo.options">
-													<input  type="checkbox" ng-model="option.optionName">
+													<input  type="checkbox"
+													ng-click="updateSpecOptions($event,pojo.text,option.optionName)">
 													{{option.optionName}}			                            				                            	
 					                            </span>  	
-																				
-					                            	
 					                        </div>
 		                                </div>   
-										  
+										{{entity.goodsDesc.specficationItems}}
 		                                                                                  
 	                                </div>
-	
+									
 	                                
 	                                <div class="row data-type">
 	                                	 <table class="table table-bordered table-striped table-hover dataTable">

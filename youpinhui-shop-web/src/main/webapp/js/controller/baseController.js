@@ -35,9 +35,20 @@ app.controller('baseController',function($scope){
           }
             value+=json[i][key];
         }
-
         return value;
+    }
 
+    // a function to search if a list contains a certain key -value.
+    // if it contains return the object in the list
+    // if it doesn't return null;
+    $scope.searchObjectByKey=function(list,key,keyValue){
+        for (let index = 0; index < list.length; index++) {
+          
+            if(list[index][key]==keyValue){
+                return list[index];
+            }
+        }
+        return null;
     }
        
 	

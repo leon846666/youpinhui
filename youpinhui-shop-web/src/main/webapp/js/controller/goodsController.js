@@ -3,6 +3,8 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
+	$scope.entity={goods:{},goodsDesc:{itemImages:[],specficationItems:[]} }
+
     //test case , get all the data return a Json
 	$scope.findAll=function(){
 		goodsService.findAll().success(
@@ -105,7 +107,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 			}
 		)
 	}
-	$scope.entity={goods:{},goodsDesc:{itemImages:[]} }
+
 	$scope.add_images=function(){
 		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
 	}
@@ -163,22 +165,45 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 			function(response){
 				//alert(newValue);
 				$scope.typeTemplate=response;
-				console.log($scope.typeTemplate);
+				//console.log($scope.typeTemplate);
 				$scope.typeTemplate.brandIds=JSON.parse($scope.typeTemplate.brandIds);
 				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.typeTemplate.customAttributeItems);
 				//alert(	$scope.typeTemplate.customAttributeItems);
 			}
 		)
-
 		typeTemplateService.findSpecList($scope.entity.goods.typeTemplateId).success(
 			function(response){
 				$scope.specList= response;
-				
 			}
 		)
 			
 	}
 	)
+
+	$scope.updateSpecOptions=function($event,name,value){
+		
+		//the obj format
+	// $scope.entity.goodsDesc.specficationItems=[]
+	//$scope.entity.goodsDesc.specficationItems = [{"attributeName":"xx","attributeValue":["xxx","xxx"]}]
+		var obj=$scope.searchObjectByKey($scope.entity.goodsDesc.specficationItems,"attributeName",name);
+		//alert(obj)
+		if(obj!=null){
+			if($event.target.checked){
+				obj.attributeValue.push(value);
+			}else{
+				obj.attributeValue.splice( obj.attributeValue.indexOf(value),1);
+				if(obj.attributeValue.length==0){
+					$scope.entity.goodsDesc.specficationItems.splice(
+						$scope.entity.goodsDesc.specficationItems.indexOf(obj.attributeValue),1);
+				}
+			}
+			
+		}
+		else{
+			$scope.entity.goodsDesc.specficationItems.push({"attributeName":name,"attributeValue":[value]})
+		}
+	}
+
 
 
 
