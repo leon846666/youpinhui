@@ -210,7 +210,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 		$scope.entity.itemList=[
 			{ 
 				spec:{},
-				price:0,
+				price:0, 
 				number:9999,
 				status:'0',
 				isDefault:'0'
