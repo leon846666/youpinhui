@@ -181,7 +181,6 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	)
 
 	$scope.updateSpecOptions=function($event,name,value){
-		
 		//the obj format
 	// $scope.entity.goodsDesc.specficationItems=[]
 	//$scope.entity.goodsDesc.specficationItems = [{"attributeName":"xx","attributeValue":["xxx","xxx"]}]
@@ -197,15 +196,45 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 						$scope.entity.goodsDesc.specficationItems.indexOf(obj.attributeValue),1);
 				}
 			}
-			
 		}
 		else{
 			$scope.entity.goodsDesc.specficationItems.push({"attributeName":name,"attributeValue":[value]})
 		}
 	}
 
+	// create SKU list 
+	
+	$scope.createItemList=function(){
 
+		// a init variable 
+		$scope.entity.itemList=[
+			{ 
+				spec:{},
+				price:0,
+				number:9999,
+				status:'0',
+				isDefault:'0'
+			 }];
+		var items=$scope.entity.goodsDesc.specficationItems;
+		
+		for (let i = 0; i < items.length; i++) {
+			$scope.entity.itemList=	addColumn(	$scope.entity.itemList,items[i].attributeName, items[i].attributeValue);
+		}
+	}
 
-
+	addColumn=function(list,columnName,columnValues){
+		var newList=[];
+	
+		for (let i = 0; i < list.length; i++) {
+			var oldRow=list[i];
+			for (let j = 0; j < columnValues.length; j++) {
+				//deep clone
+				var newRow =  JSON.parse(JSON.stringify(oldRow));
+				newRow.spec[columnName]=columnValues[j];
+				newList.push(newRow);
+			}
+		}
+		return newList;
+	}
 
 })
