@@ -87,45 +87,60 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsDescMapper.insert(goods.getGoodsDesc());
 		
 		// title = goodsname + specification  iphone8 64g 
-		String title=goods.getGoods().getGoodsName(); //SPU name
-		
-		for (TbItem item : goods.getItemList()) {
-			//
-			Map<String,Object> map = JSON.parseObject(item.getSpec());
-			for( String key:map.keySet()){
-				 title += " "+map.get(key);
-			}
-			item.setTitle(title);
-			
-			item.setCategoryid(goods.getGoods().getCategory3Id());
-			item.setCreateTime(new Date());
-			item.setUpdateTime(new Date());
-			
-			item.setGoodsId(goods.getGoods().getId()); //good id
-			item.setSellerId(goods.getGoods().getSellerId()); // seller id
-			System.out.println("cate id "+goods.getGoods().getCategory3Id());
-			//category name
-			TbItemCat itemCatory = itemCatMapper.selectByPrimaryKey(item.getCategoryid());
-			System.out.println("tostring  :"+itemCatory.toString());
-			item.setCategory(itemCatory.getName());
-			
-			//brand name
-			TbBrand brand = tbBrandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
-			item.setBrand(brand.getName());
-			
-			//seller name
-			TbSeller seller = sellerMapper.selectByPrimaryKey(item.getSellerId());
-			item.setSeller(seller.getNickName());
-			
-			//images
-			String itemImages = goods.getGoodsDesc().getItemImages();
-			List<Map> imgList = JSON.parseArray(itemImages,Map.class);
-			
-			if (imgList.size()>0) {
-				item.setImage((String) imgList.get(0).get("url"));
-			}
-			itemMapper.insert(item);
 
+		//if the use of specification is enable
+		if ("1".equals(goods.getGoods().getIsEnableSpec())) {
+			for (TbItem item : goods.getItemList()) {
+				String title=goods.getGoods().getGoodsName(); //SPU name
+				
+				Map<String,Object> map = JSON.parseObject(item.getSpec());
+				for( String key:map.keySet()){
+					 title += " "+map.get(key);
+				}
+				item.setTitle(title);
+				setItemValues(item,goods);
+				itemMapper.insert(item);
+		}
+		}else{// if is not disable;
+			TbItem item = new TbItem();
+			
+			item.setTitle(goods.getGoods().getGoodsName());  //title
+			item.setPrice(goods.getGoods().getPrice()); // price
+			item.setStatus("1");    // status 
+			item.setNum(9999);   //stoc
+			item.setIsDefault("1");  // defalut
+			item.setSpec("{}");
+			setItemValues(item,goods);
+			itemMapper.insert(item);
+			
+		}
+	}
+	
+	private void setItemValues(TbItem item,Goods goods){
+		item.setCreateTime(new Date());  //date
+		item.setUpdateTime(new Date());  //update date
+		
+		item.setCategoryid(goods.getGoods().getCategory3Id());  //category id
+		item.setGoodsId(goods.getGoods().getId()); //good id
+		item.setSellerId(goods.getGoods().getSellerId()); // seller id
+		//category name
+		TbItemCat itemCatory = itemCatMapper.selectByPrimaryKey(item.getCategoryid());
+		item.setCategory(itemCatory.getName());
+		
+		//brand name
+		TbBrand brand = tbBrandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
+		item.setBrand(brand.getName());
+		
+		//seller name
+		TbSeller seller = sellerMapper.selectByPrimaryKey(item.getSellerId());
+		item.setSeller(seller.getNickName());
+		
+		//images
+		String itemImages = goods.getGoodsDesc().getItemImages();
+		List<Map> imgList = JSON.parseArray(itemImages,Map.class);
+		
+		if (imgList.size()>0) {
+			item.setImage((String) imgList.get(0).get("url"));
 		}
 	}
 
