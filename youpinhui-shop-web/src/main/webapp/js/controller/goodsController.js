@@ -3,7 +3,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
-	$scope.entity={goods:{},goodsDesc:{itemImages:[],specficationItems:[]} }
+	$scope.entity={goodsDesc:{itemImages:[],specficationItems:[]} }
 
     //test case , get all the data return a Json
 	$scope.findAll=function(){
@@ -54,7 +54,8 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	}
 		//save 
 		$scope.add=function(){	
-			$scope.entity.goodsDesc.introduction=editor.html();			
+			$scope.entity.goodsDesc.introduction=editor.html();		
+			console.log($scope.entity);
 			goodsService.add( $scope.entity  ).success(
 				function(response){
 					if(response.success){
@@ -125,7 +126,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	}
 
 	// get the level2  itemCategory
-	$scope.$watch("entity.goods.categort1Id",function(newValue,oldValue){
+	$scope.$watch("entity.goods.category1Id",function(newValue,oldValue){
 		$scope.itemCateList3={};
 		$scope.entity.goods.typeTemplateId=null;
 		itemCatService.findByParentId(newValue).success(
@@ -137,7 +138,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	)	
 
 	//get the level 3 item Category
-	$scope.$watch("entity.goods.categort2Id",function(newValue,oldValue){
+	$scope.$watch("entity.goods.category2Id",function(newValue,oldValue){
 		$scope.entity.goods.typeTemplateId=null;
 		itemCatService.findByParentId(newValue).success(
 			function(response){
@@ -147,7 +148,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	}
 	)	
 		//get the template id from the selected level3category 
-	$scope.$watch("entity.goods.categort3Id",function(newValue,oldValue){
+	$scope.$watch("entity.goods.category3Id",function(newValue,oldValue){
 		itemCatService.findOne(newValue).success(
 			function(response){
 				$scope.entity.goods.typeTemplateId=response.typeId;

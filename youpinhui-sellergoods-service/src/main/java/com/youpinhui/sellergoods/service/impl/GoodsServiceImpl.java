@@ -1,16 +1,31 @@
 package com.youpinhui.sellergoods.service.impl;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.alibaba.druid.support.json.JSONParser;
+
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.sun.tools.classfile.Opcode.Set;
 import com.youpinhui.entity.PageResult;
+import com.youpinhui.mapper.TbBrandMapper;
 import com.youpinhui.mapper.TbGoodsDescMapper;
 import com.youpinhui.mapper.TbGoodsMapper;
+import com.youpinhui.mapper.TbItemCatMapper;
+import com.youpinhui.mapper.TbItemMapper;
+import com.youpinhui.mapper.TbSellerMapper;
+import com.youpinhui.pojo.TbBrand;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbGoodsExample;
 import com.youpinhui.pojo.TbGoodsExample.Criteria;
+import com.youpinhui.pojo.TbItem;
+import com.youpinhui.pojo.TbItemCat;
+import com.youpinhui.pojo.TbSeller;
 import com.youpinhui.pojogroup.Goods;
 import com.youpinhui.sellergoods.service.GoodsService;
 
@@ -28,6 +43,18 @@ public class GoodsServiceImpl implements GoodsService {
 	private TbGoodsMapper goodsMapper;
 	@Autowired
 	private TbGoodsDescMapper goodsDescMapper;
+	
+	@Autowired
+	private TbItemMapper itemMapper;
+	
+	@Autowired
+	private TbItemCatMapper itemCatMapper;
+	
+	@Autowired
+	private TbBrandMapper tbBrandMapper;
+	
+	@Autowired 
+	private TbSellerMapper sellerMapper;
 	
 	/**
 	 * find all
@@ -58,6 +85,48 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId()); // set the goodsDesc ID by good id.
 		goodsDescMapper.insert(goods.getGoodsDesc());
+		
+		// title = goodsname + specification  iphone8 64g 
+		String title=goods.getGoods().getGoodsName(); //SPU name
+		
+		for (TbItem item : goods.getItemList()) {
+			//
+			Map<String,Object> map = JSON.parseObject(item.getSpec());
+			for( String key:map.keySet()){
+				 title += " "+map.get(key);
+			}
+			item.setTitle(title);
+			
+			item.setCategoryid(goods.getGoods().getCategory3Id());
+			item.setCreateTime(new Date());
+			item.setUpdateTime(new Date());
+			
+			item.setGoodsId(goods.getGoods().getId()); //good id
+			item.setSellerId(goods.getGoods().getSellerId()); // seller id
+			System.out.println("cate id "+goods.getGoods().getCategory3Id());
+			//category name
+			TbItemCat itemCatory = itemCatMapper.selectByPrimaryKey(item.getCategoryid());
+			System.out.println("tostring  :"+itemCatory.toString());
+			item.setCategory(itemCatory.getName());
+			
+			//brand name
+			TbBrand brand = tbBrandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
+			item.setBrand(brand.getName());
+			
+			//seller name
+			TbSeller seller = sellerMapper.selectByPrimaryKey(item.getSellerId());
+			item.setSeller(seller.getNickName());
+			
+			//images
+			String itemImages = goods.getGoodsDesc().getItemImages();
+			List<Map> imgList = JSON.parseArray(itemImages,Map.class);
+			
+			if (imgList.size()>0) {
+				item.setImage((String) imgList.get(0).get("url"));
+			}
+			itemMapper.insert(item);
+
+		}
 	}
 
 	

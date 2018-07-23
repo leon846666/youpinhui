@@ -21,6 +21,22 @@ public class Goods implements Serializable {
 	private List<TbItem> itemList; // goods SKU list 
 	
 	
+	public Goods(TbGoods goods, TbGoodsDesc goodsDesc, List<TbItem> itemList) {
+		super();
+		this.goods = goods;
+		this.goodsDesc = goodsDesc;
+		this.itemList = itemList;
+	}
+	
+	public Goods() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "Goods [goods=" + goods + ", goodsDesc=" + goodsDesc + ", itemList=" + itemList + "]";
+	}
 	public TbGoods getGoods() {
 		return goods;
 	}
