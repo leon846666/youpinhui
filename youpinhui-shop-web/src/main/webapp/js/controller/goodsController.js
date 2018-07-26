@@ -5,6 +5,8 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	
 	$scope.entity={goodsDesc:{itemImages:[],specficationItems:[]} }
 
+	$scope.status=['Unreviewed','Reviewed','Not Approved','Closed'];
+
     //test case , get all the data return a Json
 	$scope.findAll=function(){
 		goodsService.findAll().success(
@@ -237,5 +239,19 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 		}
 		return newList;
 	}
+
+	$scope.catItemList=[];
+
+	$scope.findCatList=function(){
+		 itemCatService.findAll().success(
+			function(response){
+				for(var i=0;i<response.length;i++){
+					$scope.catItemList[response[i].id]=response[i].name;
+				}
+			}
+		)
+	}
+
+
 
 })
