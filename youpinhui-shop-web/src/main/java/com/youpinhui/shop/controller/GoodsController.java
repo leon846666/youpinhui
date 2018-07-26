@@ -115,6 +115,13 @@ public class GoodsController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
+		
+		// get seller id from security context
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		// set the seller ID
+		goods.setSellerId(name);
+		
+		
 		return goodsService.findPage(goods, page, rows);		
 	}
 	

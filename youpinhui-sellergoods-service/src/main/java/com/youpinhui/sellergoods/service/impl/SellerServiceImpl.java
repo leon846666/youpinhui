@@ -99,7 +99,9 @@ public class SellerServiceImpl implements SellerService {
 		
 		if(seller!=null){			
 						if(seller.getSellerId()!=null && seller.getSellerId().length()>0){
-				criteria.andSellerIdLike("%"+seller.getSellerId()+"%");
+				//criteria.andSellerIdLike("%"+seller.getSellerId()+"%");
+				 criteria.andSellerIdEqualTo(seller.getSellerId());
+							
 			}
 			if(seller.getName()!=null && seller.getName().length()>0){
 				criteria.andNameLike("%"+seller.getName()+"%");
