@@ -1,5 +1,5 @@
  //Controller
-app.controller('goodsController' ,function($scope,$controller   ,goodsService,uploadService,itemCatService,typeTemplateService){	
+app.controller('goodsController' ,function($scope,$controller,$location  ,goodsService,uploadService,itemCatService,typeTemplateService){	
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
@@ -27,7 +27,9 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,up
 	}
 	
 	//find one object 
-	$scope.findOne=function(id){				
+	$scope.findOne=function(){
+	 var id=$location.search()['id'];	
+	 alert(id);			
 		goodsService.findOne(id).success(
 			function(response){
 				$scope.entity= response;					
