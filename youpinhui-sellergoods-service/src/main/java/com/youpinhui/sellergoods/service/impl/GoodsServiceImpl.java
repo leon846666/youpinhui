@@ -252,5 +252,18 @@ public class GoodsServiceImpl implements GoodsService {
 		Page<TbGoods> page= (Page<TbGoods>)goodsMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
+
+	@Override
+	public void updateStatus(Long[] ids, String status) {
+	
+		for (int i = 0; i < ids.length; i++) {
+			TbGoods goods = goodsMapper.selectByPrimaryKey(ids[i]);
+			goods.setAuditStatus(status);
+			goodsMapper.updateByPrimaryKey(goods);
+		}
+		
+		
+		
+	}
 	
 }

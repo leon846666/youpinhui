@@ -102,4 +102,20 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
+	/**
+	 * 
+	 * update status
+	 */
+	@RequestMapping("/updateStatus")
+	private Result updateStatus(Long [] ids,String status) {
+		try {
+			goodsService.updateStatus(ids, status);
+			return  new Result(true,"suceess");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return  new Result(true,"failed");
+		}
+		
+	}
 }
