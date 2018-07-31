@@ -174,7 +174,8 @@ ng-init="findItemCate();findOne()">
 	                                <div ng-repeat="attr in entity.goodsDesc.customAttributeItems">
 		                                <div class="col-md-2 title">{{attr.text}}</div>
 				                        <div class="col-md-10 data">
-				                              <input class="form-control" placeholder="{{attr.text}}" ng-model="attr.value">	            	 
+											  <input class="form-control" placeholder="{{attr.text}}" ng-model="attr.value">
+											           	 
 				                        </div>
 	                                </div>       
 																		
@@ -201,7 +202,9 @@ ng-init="findItemCate();findOne()">
 					                        <div class="col-md-10 data">
 					                            <span ng-repeat="option in pojo.options">
 													<input  type="checkbox"
-													ng-click="updateSpecOptions($event,pojo.text,option.optionName);createItemList()">
+													ng-click="updateSpecOptions($event,pojo.text,option.optionName);createItemList()" 
+													ng-checked="checkAttributeValue(pojo.text,option.optionName)"
+													>
 													{{option.optionName}}			                            				                            	
 					                            </span>  	
 					                        </div>
@@ -216,7 +219,7 @@ ng-init="findItemCate();findOne()">
 						                    <thead>
 						                        <tr>					                          
 													<th class="sorting"
-													 ng-repeat=" item in entity.goodsDesc.specficationItems">{{item.attributeName}}</th>
+													 ng-repeat=" item in entity.goodsDesc.specificationItems">{{item.attributeName}}</th>
 													
 												    <th class="sorting">价格</th>
 												    <th class="sorting">库存</th>
@@ -226,7 +229,7 @@ ng-init="findItemCate();findOne()">
 								            </thead>
 						                    <tbody>
 						                      <tr ng-repeat=" pojo in entity.itemList" >					                           
-										            <td ng-repeat=" item in entity.goodsDesc.specficationItems">
+										            <td ng-repeat=" item in entity.goodsDesc.specificationItems">
 										            	{{pojo.spec[item.attributeName]}}
 										            </td>
 													

@@ -26,6 +26,7 @@ import com.youpinhui.pojo.TbGoodsExample;
 import com.youpinhui.pojo.TbGoodsExample.Criteria;
 import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojo.TbItemCat;
+import com.youpinhui.pojo.TbItemExample;
 import com.youpinhui.pojo.TbSeller;
 import com.youpinhui.pojogroup.Goods;
 import com.youpinhui.sellergoods.service.GoodsService;
@@ -102,7 +103,7 @@ public class GoodsServiceImpl implements GoodsService {
 				setItemValues(item,goods);
 				itemMapper.insert(item);
 		}
-		}else{// if is not disable;
+		}else{// if is  disable;
 			TbItem item = new TbItem();
 			
 			item.setTitle(goods.getGoods().getGoodsName());  //title
@@ -162,10 +163,19 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public Goods findOne(Long id){
 		 Goods goods = new Goods();
+		 
 		 TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
 		 goods.setGoods(tbGoods);
+		 
 		 TbGoodsDesc tbGoodDesc = goodsDescMapper.selectByPrimaryKey(id);
 		 goods.setGoodsDesc(tbGoodDesc);
+		 
+		
+		TbItemExample example= new TbItemExample();
+		com.youpinhui.pojo.TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andGoodsIdEqualTo(id);
+		List<TbItem> itemList = itemMapper.selectByExample(example);
+		 goods.setItemList(itemList);
 		 
 		return goods;
 	}

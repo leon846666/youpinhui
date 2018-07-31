@@ -3,7 +3,7 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
-	$scope.entity={goodsDesc:{itemImages:[],specficationItems:[]} }
+	$scope.entity={goodsDesc:{itemImages:[],specificationItems:[]} }
 
 	$scope.status=['Unreviewed','Reviewed','Not Approved','Closed'];
 
@@ -29,10 +29,24 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	//find one object 
 	$scope.findOne=function(){
 	 var id=$location.search()['id'];	
-	 alert(id);			
+		if(id==null){
+			return ;
+		}
 		goodsService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;	
+				editor.html($scope.entity.goodsDesc.introduction);
+				
+				$scope.entity.goodsDesc.itemImages=JSON.parse($scope.entity.goodsDesc.itemImages);
+				//alert($scope.entity.goodsDesc.itemImages);
+				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+				//console.log($scope.entity.goodsDesc.customAttributeItems);
+				$scope.entity.goodsDesc.specificationItems=JSON.parse($scope.entity.goodsDesc.specificationItems);
+
+				for(i=0;i<$scope.entity.itemList.length;i++){
+					$scope.entity.itemList[i].spec=JSON.parse($scope.entity.itemList[i].spec);
+				}
+
 			}
 		);				
 	}
@@ -172,8 +186,9 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 				$scope.typeTemplate=response;
 				//console.log($scope.typeTemplate);
 				$scope.typeTemplate.brandIds=JSON.parse($scope.typeTemplate.brandIds);
-				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.typeTemplate.customAttributeItems);
-				//alert(	$scope.typeTemplate.customAttributeItems);
+				if($location.search()['id']==null){
+					$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.typeTemplate.customAttributeItems);
+				}
 			}
 		)
 		typeTemplateService.findSpecList($scope.entity.goods.typeTemplateId).success(
@@ -185,25 +200,44 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	}
 	)
 
+	//check if the specName & options exist in the specification.items
+
+	$scope.checkAttributeValue=function(specName,optionName){
+		var items=$scope.entity.goodsDesc.specificationItems;
+		var obj=	$scope.searchObjectByKey(items,"attributeName",specName);
+		if(obj!=null){
+			if(obj.attributeValue.indexOf(optionName)>=0){ //if found, should be checked
+				return true;
+			}else{
+				return false;
+			}
+
+		}else{  // else return unchecked
+			return false;
+		}
+		
+	}
+
 	$scope.updateSpecOptions=function($event,name,value){
 		//the obj format
-	// $scope.entity.goodsDesc.specficationItems=[]
-	//$scope.entity.goodsDesc.specficationItems = [{"attributeName":"xx","attributeValue":["xxx","xxx"]}]
-		var obj=$scope.searchObjectByKey($scope.entity.goodsDesc.specficationItems,"attributeName",name);
+	// $scope.entity.goodsDesc.specificationItems=[]
+	//$scope.entity.goodsDesc.specificationItems = [{"attributeName":"xx","attributeValue":["xxx","xxx"]}]
+		var obj=$scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems,"attributeName",name);
 		//alert(obj)
+
 		if(obj!=null){
 			if($event.target.checked){
 				obj.attributeValue.push(value);
 			}else{
 				obj.attributeValue.splice( obj.attributeValue.indexOf(value),1);
 				if(obj.attributeValue.length==0){
-					$scope.entity.goodsDesc.specficationItems.splice(
-						$scope.entity.goodsDesc.specficationItems.indexOf(obj.attributeValue),1);
+					$scope.entity.goodsDesc.specificationItems.splice(
+						$scope.entity.goodsDesc.specificationItems.indexOf(obj.attributeValue),1);
 				}
 			}
 		}
 		else{
-			$scope.entity.goodsDesc.specficationItems.push({"attributeName":name,"attributeValue":[value]})
+			$scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]})
 		}
 	}
 
@@ -220,7 +254,7 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 				status:'0',
 				isDefault:'0'
 			 }];
-		var items=$scope.entity.goodsDesc.specficationItems;
+		var items=$scope.entity.goodsDesc.specificationItems;
 		
 		for (let i = 0; i < items.length; i++) {
 			$scope.entity.itemList=	addColumn(	$scope.entity.itemList,items[i].attributeName, items[i].attributeValue);
