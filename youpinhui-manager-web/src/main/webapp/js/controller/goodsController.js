@@ -1,5 +1,5 @@
  //Controller
-app.controller('goodsController' ,function($scope,$controller,$location  ,goodsService,uploadService,itemCatService,typeTemplateService){	
+app.controller('goodsController' ,function($scope,$controller,$location  ,goodsService,itemCatService){	
 	
 	$controller('baseController',{$scope:$scope});//inheritance
 	
@@ -113,25 +113,7 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 		);
 	}
 
-	$scope.uploadImage=function(){
-		uploadService.uploadImage().success(
-			function(response){
-				if(response.success){
-					$scope.image_entity.url=response.message; 
-				}else{
-					alert(response.message)
-				}
-			}
-		)
-	}
 
-	$scope.add_images=function(){
-		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
-	}
-
-	$scope.deleImages=function(index){
-		$scope.entity.goodsDesc.itemImages.splice(index,1);
-	}
 
 	$scope.findItemCate=function(){
 		itemCatService.findByParentId(0).success(
@@ -174,29 +156,6 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	}
 	)
 
-		//search the brand name by the typeTemplateID, because all the brands is matched by the templateId in the 
-		// tb_type_template 
-	$scope.$watch("entity.goods.typeTemplateId",function(newValue,oldValue){
-	
-		typeTemplateService.findOne(newValue).success(
-			function(response){
-				//alert(newValue);
-				$scope.typeTemplate=response;
-				//console.log($scope.typeTemplate);
-				$scope.typeTemplate.brandIds=JSON.parse($scope.typeTemplate.brandIds);
-				if($location.search()['id']==null){
-					$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.typeTemplate.customAttributeItems);
-				}
-			}
-		)
-		typeTemplateService.findSpecList($scope.entity.goods.typeTemplateId).success(
-			function(response){
-				$scope.specList= response;
-			}
-		)
-			
-	}
-	)
 
 	//check if the specName & options exist in the specification.items
 
