@@ -36,7 +36,7 @@ public interface GoodsService {
 	/**
 	 * update
 	 */
-	public void update(TbGoods goods);
+	public void update(Goods goods);
 	
 
 	/**

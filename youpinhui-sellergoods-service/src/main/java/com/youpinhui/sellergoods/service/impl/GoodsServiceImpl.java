@@ -91,6 +91,11 @@ public class GoodsServiceImpl implements GoodsService {
 		// title = goodsname + specification  iphone8 64g 
 
 		//if the use of specification is enable
+		//insert the  SKUs
+		insertItemList(goods);
+	}
+	
+	private void insertItemList(Goods goods){
 		if ("1".equals(goods.getGoods().getIsEnableSpec())) {
 			for (TbItem item : goods.getItemList()) {
 				String title=goods.getGoods().getGoodsName(); //SPU name
@@ -151,8 +156,22 @@ public class GoodsServiceImpl implements GoodsService {
 	 * update
 	 */
 	@Override
-	public void update(TbGoods goods){
-		goodsMapper.updateByPrimaryKey(goods);
+	public void update(Goods goods){
+		
+		
+		goodsMapper.updateByPrimaryKey(goods.getGoods());
+		
+		goodsDescMapper.updateByPrimaryKey(goods.getGoodsDesc());
+		
+		//delete the original SKU
+		TbItemExample example = new TbItemExample();
+		com.youpinhui.pojo.TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andGoodsIdEqualTo(goods.getGoods().getId());
+		itemMapper.deleteByExample(example);
+		
+		//insert the new SKUs
+		insertItemList(goods);
+		
 	}	
 	
 	/**

@@ -36,7 +36,7 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 			function(response){
 				$scope.entity= response;	
 				editor.html($scope.entity.goodsDesc.introduction);
-				
+
 				$scope.entity.goodsDesc.itemImages=JSON.parse($scope.entity.goodsDesc.itemImages);
 				//alert($scope.entity.goodsDesc.itemImages);
 				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.entity.goodsDesc.customAttributeItems);
@@ -52,9 +52,10 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	}
 	
 	//save 
-	$scope.save=function(){				
+	$scope.save=function(){		
+		$scope.entity.goodsDesc.introduction=editor.html();			
 		var serviceObject; 				
-		if($scope.entity.id!=null){//if it contains an id
+		if($scope.entity.goods.id!=null){//if it contains an id
 			serviceObject=goodsService.update( $scope.entity ); //update   
 		}else{
 			serviceObject=goodsService.add( $scope.entity  );//add
@@ -62,8 +63,8 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 		serviceObject.success(
 			function(response){
 				if(response.success){
-					 
-		        	$scope.reloadList();//reload page
+					alert("goods updated");
+					location.href="goods.html";
 				}else{
 					alert(response.message);
 				}
@@ -72,15 +73,12 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	}
 		//save 
 		$scope.add=function(){	
-			$scope.entity.goodsDesc.introduction=editor.html();		
+			
 			console.log($scope.entity);
 			goodsService.add( $scope.entity  ).success(
 				function(response){
 					if(response.success){
-						alert("added a new goods");
-						$scope.entity={};
-						$scope.reloadList();//reload page
-						editor.html('');
+						
 					}else{
 						alert(response.message);
 					}

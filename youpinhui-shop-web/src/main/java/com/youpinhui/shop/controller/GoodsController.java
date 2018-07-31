@@ -70,7 +70,18 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
+
+		//current sellerID
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		Goods goods2 = goodsService.findOne(goods.getGoods().getId());
+		//check if the the seller id is the same
+		if(!goods2.getGoods().getSellerId().equals(sellerId)||!goods.getGoods().getSellerId().equals(sellerId)){
+			return new Result(false, "修改失败");
+		}
+		
+		
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
