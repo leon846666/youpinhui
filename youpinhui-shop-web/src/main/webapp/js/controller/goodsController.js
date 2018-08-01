@@ -90,7 +90,8 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	 
 	//batch delete
 	$scope.dele=function(){			
-		//receive the selected id from checkbox 		
+		//receive the selected id from checkbox 	
+		alert($scope.selectIds[0]);
 		goodsService.dele( $scope.selectIds ).success(
 			function(response){
 				if(response.success){
@@ -282,6 +283,19 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 			function(response){
 				for(var i=0;i<response.length;i++){
 					$scope.catItemList[response[i].id]=response[i].name;
+				}
+			}
+		)
+	}
+
+	$scope.offMarket=function(){
+		alert("123")
+		goodsService.offMarket($scope.selectIds).success(
+			function(response){
+				if(response){
+					$scope.reloadList();
+				}else{
+					alert(response.message);
 				}
 			}
 		)

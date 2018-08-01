@@ -23,10 +23,16 @@ app.service('goodsService',function($http){
 	}
 	//batch delete
 	this.dele=function(ids){
+		
 		return $http.get('../goods/delete.do?ids='+ids);
 	}
 	//search
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../goods/search.do?page='+page+"&rows="+rows, searchEntity);
-	}    	
+	}    
+	// off market
+	
+	this.offMarket=function(ids){
+		return $http.get("../goods/updateMarketable.do?ids="+ids);
+	}
 });

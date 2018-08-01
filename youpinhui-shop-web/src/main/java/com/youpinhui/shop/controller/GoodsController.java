@@ -136,4 +136,17 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
+	@RequestMapping("/updateMarketable")
+	public Result updateMarketable(Long []ids) {
+		
+		try {
+			goodsService.updateMarketable(ids);
+			return new Result(true,"success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false,"failed");
+		}
+	}
+	
 }

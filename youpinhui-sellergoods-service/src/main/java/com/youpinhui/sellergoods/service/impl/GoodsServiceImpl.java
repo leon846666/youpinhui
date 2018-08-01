@@ -87,7 +87,7 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId()); // set the goodsDesc ID by good id.
 		goodsDescMapper.insert(goods.getGoodsDesc());
-		
+		goods.getGoods().setIsMarketable("1");
 		// title = goodsname + specification  iphone8 64g 
 
 		//if the use of specification is enable
@@ -205,7 +205,13 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			goodsMapper.deleteByPrimaryKey(id);
+			//goodsMapper.deleteByPrimaryKey(id);
+			
+			//mark the goods is_delete
+			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+			goods.setIsDelete("1");
+			goodsMapper.updateByPrimaryKey(goods);
+			
 		}		
 	}
 	
@@ -220,9 +226,10 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		TbGoodsExample example=new TbGoodsExample();
 		Criteria criteria = example.createCriteria();
-		
+		criteria.andIsDeleteIsNull();
+		criteria.andIsMarketableNotEqualTo("0");
 		if(goods!=null){			
-						if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
+			if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
 				criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
 			}
 			if(goods.getGoodsName()!=null && goods.getGoodsName().length()>0){
@@ -262,6 +269,18 @@ public class GoodsServiceImpl implements GoodsService {
 			goodsMapper.updateByPrimaryKey(goods);
 		}
 		
+		
+		
+	}
+
+	@Override
+	public void updateMarketable(Long[] ids) {
+
+		for (int i = 0; i < ids.length; i++) {
+			TbGoods goods = goodsMapper.selectByPrimaryKey(ids[i]);
+			goods.setIsMarketable("0");
+			goodsMapper.updateByPrimaryKey(goods);
+		}
 		
 		
 	}

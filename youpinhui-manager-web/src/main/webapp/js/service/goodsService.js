@@ -23,6 +23,7 @@ app.service('goodsService',function($http){
 	}
 	//batch delete
 	this.dele=function(ids){
+		alert(ids);
 		return $http.get('../goods/delete.do?ids='+ids);
 	}
 	//search

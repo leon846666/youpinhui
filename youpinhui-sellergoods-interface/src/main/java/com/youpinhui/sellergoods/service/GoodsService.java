@@ -69,6 +69,14 @@ public interface GoodsService {
 	public void updateStatus(Long [] ids,String status);
 	
 	
+
+	/**
+	 * update  Marketable
+	 * 
+	 */
+	public void updateMarketable(Long [] ids);
+	
+	
 	
 	
 }

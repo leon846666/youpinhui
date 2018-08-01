@@ -114,7 +114,7 @@ public class GoodsController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return  new Result(true,"failed");
+			return  new Result(false,"failed");
 		}
 		
 	}

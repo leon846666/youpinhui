@@ -90,6 +90,7 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 	 
 	//batch delete
 	$scope.dele=function(){			
+		alert( $scope.selectIds);
 		//receive the selected id from checkbox 		
 		goodsService.dele( $scope.selectIds ).success(
 			function(response){
