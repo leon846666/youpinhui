@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.JsonExpectationsHelper;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
@@ -30,6 +31,7 @@ import com.youpinhui.sellergoods.service.TypeTemplateService;
  * Annotation service is using com.alibaba.dubbo.config.annotation.Service;
  */
 @Service
+@Transactional
 public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 	@Autowired

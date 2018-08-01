@@ -2,6 +2,8 @@ package com.youpinhui.sellergoods.service.impl;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +23,7 @@ import com.youpinhui.sellergoods.service.SellerService;
  * Annotation service is using com.alibaba.dubbo.config.annotation.Service;
  */
 @Service
+@Transactional
 public class SellerServiceImpl implements SellerService {
 
 	@Autowired
