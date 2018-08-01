@@ -1,0 +1,105 @@
+package com.youpinhui.content.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.youpinhui.content.service.ContentCategoryService;
+import com.youpinhui.entity.PageResult;
+import com.youpinhui.mapper.TbContentCategoryMapper;
+import com.youpinhui.pojo.TbContentCategory;
+import com.youpinhui.pojo.TbContentCategoryExample;
+import com.youpinhui.pojo.TbContentCategoryExample.Criteria;
+
+/**
+ * Interface implement class
+ * @author Leon
+ *
+ * Annotation service is using com.alibaba.dubbo.config.annotation.Service;
+ */
+@Service
+public class ContentCategoryServiceImpl implements ContentCategoryService {
+
+	@Autowired
+	private TbContentCategoryMapper contentCategoryMapper;
+	
+	/**
+	 * find all
+	 */
+	@Override
+	public List<TbContentCategory> findAll() {
+		return contentCategoryMapper.selectByExample(null);
+	}
+
+	/**
+	 *  query according pagination 
+	 */
+	@Override
+	public PageResult findPage(int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);		
+		Page<TbContentCategory> page=   (Page<TbContentCategory>) contentCategoryMapper.selectByExample(null);
+		return new PageResult(page.getTotal(), page.getResult());
+	}
+
+	/**
+	 * Add
+	 */
+	@Override
+	public void add(TbContentCategory contentCategory) {
+		contentCategoryMapper.insert(contentCategory);		
+	}
+
+	
+	/**
+	 * update
+	 */
+	@Override
+	public void update(TbContentCategory contentCategory){
+		contentCategoryMapper.updateByPrimaryKey(contentCategory);
+	}	
+	
+	/**
+	 * get one by id
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public TbContentCategory findOne(Long id){
+		return contentCategoryMapper.selectByPrimaryKey(id);
+	}
+
+	/**
+	 * batch delete
+	 */
+	@Override
+	public void delete(Long[] ids) {
+		for(Long id:ids){
+			contentCategoryMapper.deleteByPrimaryKey(id);
+		}		
+	}
+	
+	/**
+	*	fuzzy search 
+ 	* if the object  is not null , get the parameter from it as the search condition.
+	*
+	*/
+		@Override
+	public PageResult findPage(TbContentCategory contentCategory, int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		
+		TbContentCategoryExample example=new TbContentCategoryExample();
+		Criteria criteria = example.createCriteria();
+		
+		if(contentCategory!=null){			
+						if(contentCategory.getName()!=null && contentCategory.getName().length()>0){
+				criteria.andNameLike("%"+contentCategory.getName()+"%");
+			}
+	
+		}
+		
+		Page<TbContentCategory> page= (Page<TbContentCategory>)contentCategoryMapper.selectByExample(example);		
+		return new PageResult(page.getTotal(), page.getResult());
+	}
+	
+}

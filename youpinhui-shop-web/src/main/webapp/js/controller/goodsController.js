@@ -123,6 +123,10 @@ app.controller('goodsController' ,function($scope,$controller,$location  ,goodsS
 					alert(response.message)
 				}
 			}
+		).error(
+				function(){
+					alert("error in upload")
+				}
 		)
 	}
 
