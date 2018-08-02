@@ -54,8 +54,10 @@ app.controller('contentController' ,function($scope,$controller ,uploadService,c
 	 
 	//batch delete
 	$scope.dele=function(){			
-		//receive the selected id from checkbox 		
+		//receive the selected id from checkbox 
+		alert($scope.selectIds)		
 		contentService.dele( $scope.selectIds ).success(
+			
 			function(response){
 				if(response.success){
 					$scope.reloadList();//reload page
@@ -101,5 +103,7 @@ app.controller('contentController' ,function($scope,$controller ,uploadService,c
 			}
 		)
 	}
+
+	$scope.status=['invalid','valid'];
     
 });	
