@@ -3,6 +3,8 @@ package com.youpinhui.content.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -25,6 +27,9 @@ public class ContentServiceImpl implements ContentService {
 
 	@Autowired
 	private TbContentMapper contentMapper;
+	
+	@Autowired
+	private RedisTemplate redisTemplate;
 	
 	/**
 	 * find all
@@ -50,6 +55,9 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	public void add(TbContent content) {
 		contentMapper.insert(content);		
+		redisTemplate.boundHashOps("content").delete(content.getCategoryId());
+		
+		
 	}
 
 	
@@ -58,7 +66,19 @@ public class ContentServiceImpl implements ContentService {
 	 */
 	@Override
 	public void update(TbContent content){
+		//find the old category Id
+		Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
+		
+		//delete the old cache
+		redisTemplate.boundHashOps("content").delete(categoryId);
+		
 		contentMapper.updateByPrimaryKey(content);
+
+		//delete the current categoryid cache
+		if(categoryId.longValue()!=content.getCategoryId().longValue()){
+			redisTemplate.boundHashOps("content").delete(content.getCategoryId());
+		}
+		
 	}	
 	
 	/**
@@ -77,7 +97,12 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
+			
+			//delete cache
+			TbContent tbContent = contentMapper.selectByPrimaryKey(id);
+			redisTemplate.boundHashOps("content").delete(tbContent.getCategoryId());
 			contentMapper.deleteByPrimaryKey(id);
+			
 		}		
 	}
 	
@@ -112,21 +137,35 @@ public class ContentServiceImpl implements ContentService {
 		Page<TbContent> page= (Page<TbContent>)contentMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
+		
 
 	@Override
 	public List<TbContent> findByCategoryId(Long categoryId) {
-		TbContentExample example = new TbContentExample();
 		
-		Criteria criteria = example.createCriteria();
-		//category id
-		criteria.andCategoryIdEqualTo(categoryId);
-		// status must be valid
-		criteria.andStatusEqualTo("1");
+		List<TbContent> listContent = (List<TbContent>) redisTemplate.boundHashOps("content").get(categoryId);
 		
-		//sort the order by the column in database;
-		example.setOrderByClause("sort_order");
-		List<TbContent> listTbContent = contentMapper.selectByExample(example);
-		return listTbContent;
+		if(listContent==null){
+			System.out.println("find data from database...");
+			TbContentExample example = new TbContentExample();
+			
+			Criteria criteria = example.createCriteria();
+			//category id
+			criteria.andCategoryIdEqualTo(categoryId);
+			// status must be valid
+			criteria.andStatusEqualTo("1");
+			
+			//sort the order by the column in database;
+			example.setOrderByClause("sort_order");
+			listContent = contentMapper.selectByExample(example);
+			System.out.println("cache data...");
+			redisTemplate.boundHashOps("content").put(categoryId, listContent);
+			
+		}else{
+			System.out.println("found data fron cache....");
+		}
+		return listContent
+		
+	;
 	}
 	
 }
