@@ -285,6 +285,7 @@
 		<module>youpinhui-content-interface</module>
 		<module>youpinhui-content-service</module>
 		<module>youpinhui-portal-web</module>
+		<module>youpinhui-solr-util</module>
 	</modules>
   
 </project>
