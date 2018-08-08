@@ -1,6 +1,7 @@
 package com.youpinhui.sellergoods.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -26,6 +27,9 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
 	private TbItemCatMapper itemCatMapper;
+	
+	@Autowired
+	private RedisTemplate  redisTemplate;
 	
 	/**
 	 * find all
@@ -110,10 +114,16 @@ public class ItemCatServiceImpl implements ItemCatService {
 	 */
 	@Override
 	public List<TbItemCat> findByParentId(Long parentId) {
-		
 		TbItemCatExample example = new TbItemCatExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andParentIdEqualTo(parentId);
+		
+		List<TbItemCat> itemCateList = findAll();
+		for (TbItemCat tbItemCat : itemCateList) {
+			redisTemplate.boundHashOps("itemCate").put(tbItemCat.getName(), tbItemCat.getTypeId());
+		}
+		System.out.println("put all categorys into redis ...");
+		
 		
 		return itemCatMapper.selectByExample(example);
 	}

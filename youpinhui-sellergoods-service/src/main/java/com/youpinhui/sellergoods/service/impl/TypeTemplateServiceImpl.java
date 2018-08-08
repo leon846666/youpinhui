@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.util.JsonExpectationsHelper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,32 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 	@Autowired
 	private TbTypeTemplateMapper typeTemplateMapper;
+	
+	@Autowired
+	private RedisTemplate redisTemplate;
+	
+	/**
+	 * save brandList & specList to Redis to reduce the load of Database
+	 * 
+	 */
+	private void saveToRedis(){
+		
+		List<TbTypeTemplate> typeTemplates = findAll();
+		
+		for (TbTypeTemplate template : typeTemplates) {
+			
+			List brandList = JSON.parseArray(template.getBrandIds(),Map.class);
+			redisTemplate.boundHashOps("brandList").put(template.getId(), brandList);
+			
+			List<Map> specList = findSpecList(template.getId());
+			redisTemplate.boundHashOps("specList").put(template.getId(),specList);
+			
+		}
+		System.out.println("put brandList into redis....");
+		System.out.println("put specList into redis....");
+	}
+	
+	
 	
 	/**
 	 * find all
@@ -121,6 +148,10 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		}
 		
 		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);		
+		
+		//redis 
+		saveToRedis();
+		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
