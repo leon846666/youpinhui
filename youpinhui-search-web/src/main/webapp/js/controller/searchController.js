@@ -23,5 +23,16 @@ app.controller("searchController",function($scope,searchService){
         }
     }
 
+    $scope.removeSearchItem=function(key){
+       
+        if(key=='category'||key=='brand'){
+            // if user choose category or brand 
+            $scope.searchMap[key]='';
+        }else{
+            // user choose specification 
+            delete   $scope.searchMap.spec[key];
+        }
+    }
+
 
 })
