@@ -51,13 +51,19 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		// 2. search item category List
 		List<String> categoryList = searchCategoryList(searchMap);
 		map.put("categoryList",categoryList);
-		
+		String category =(String)searchMap.get("category");
 		
 		// 3. search brand & specfication 
-		if(categoryList.size()>0){
-			map.putAll(searchBrandAndSpecList(categoryList.get(0)));
+		// if user hasn't choose category ,use the first category in category List to search
+		if(category==""){
+			
+			if(categoryList.size()>0){
+				map.putAll(searchBrandAndSpecList(categoryList.get(0)));
+			}
+		}else{
+			//if user already chosen a category , use the chosen one to search
+			map.putAll(searchBrandAndSpecList(category));
 		}
-		
 		
 		return map;
 	}
@@ -95,7 +101,6 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 
 		// 1.4 query by specification
 		if(searchMap.get("spec")!=null){
-		
 			Map<String,String> specMap =	(Map) searchMap.get("spec");
 			for(String key :specMap.keySet()){
 				FilterQuery filterQuery = new SimpleFilterQuery();
