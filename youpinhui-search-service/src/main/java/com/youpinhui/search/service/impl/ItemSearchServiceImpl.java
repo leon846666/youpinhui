@@ -9,6 +9,7 @@ import java.util.Map;
 import org.hamcrest.core.Is;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.GroupOptions;
@@ -26,6 +27,7 @@ import org.springframework.data.solr.core.query.result.HighlightPage;
 import org.springframework.data.solr.core.query.result.ScoredPage;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.youpinhui.pojo.TbBrand;
 import com.youpinhui.pojo.TbItem;
 import com.youpinhui.search.service.ItemSearchService;
 
@@ -34,6 +36,8 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 
 	@Autowired
 	private SolrTemplate solrTemplate;
+	@Autowired
+	private RedisTemplate redisTemplate;
 	
 	@Override
 	public Map<String, Object> search(Map searchMap) {
@@ -43,7 +47,14 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		map.putAll(searchList(searchMap));
 	
 		// 2. search item category List
-		map.put("categoryList",searchCategoryList(searchMap));
+		List<String> categoryList = searchCategoryList(searchMap);
+		map.put("categoryList",categoryList);
+		
+		
+		// 3. search brand & specfication 
+		if(categoryList.size()>0){
+			map.putAll(searchBrandAndSpecList(categoryList.get(0)));
+		}
 		
 		
 		return map;
@@ -110,4 +121,27 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		
 		return list;
 	}
+	
+	
+	/**
+	 * 
+	 *  according category name find brand & speclist
+	 * @param categoryName
+	 * @return
+	 */
+	private Map searchBrandAndSpecList(String categoryName){
+	
+		Map map = new HashMap();
+		Long templateId = (Long) redisTemplate.boundHashOps("itemCate").get(categoryName);
+		if(templateId!=null){
+			List brandList = (List) redisTemplate.boundHashOps("brandList").get(templateId);
+			List specList = (List) redisTemplate.boundHashOps("specList").get(templateId);
+			System.out.println("size of brandList in redis: "+brandList.size());
+			map.put("brandList", brandList);
+			System.out.println("size of specList in redis: "+specList.size());
+			map.put("specList", specList);
+		}
+		return map;
+	}
+	
 }
