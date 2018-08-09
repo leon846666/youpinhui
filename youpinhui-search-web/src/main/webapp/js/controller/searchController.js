@@ -21,6 +21,8 @@ app.controller("searchController",function($scope,searchService){
             // user choose specification 
             $scope.searchMap.spec[key]=value;
         }
+
+        $scope.search();
     }
 
     $scope.removeSearchItem=function(key){
