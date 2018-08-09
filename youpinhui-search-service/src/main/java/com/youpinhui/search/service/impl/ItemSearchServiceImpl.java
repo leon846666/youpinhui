@@ -84,7 +84,26 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 			filterQuery.addCriteria(filterCriteria);
 			query.addFilterQuery(filterQuery);
 		}
+
+		// 1.3 query by brand
+		if(!"".equals(searchMap.get("brand"))){
+			FilterQuery filterQuery = new SimpleFilterQuery();
+			Criteria filterCriteria= new Criteria("item_brand").is(searchMap.get("brand"));
+			filterQuery.addCriteria(filterCriteria);
+			query.addFilterQuery(filterQuery);
+		}
+
+		// 1.4 query by specification
+		if(searchMap.get("spec")!=null){
 		
+			Map<String,String> specMap =	(Map) searchMap.get("spec");
+			for(String key :specMap.keySet()){
+				FilterQuery filterQuery = new SimpleFilterQuery();
+				Criteria filterCriteria= new Criteria("item_spec_"+key).is(specMap.get(key));
+				filterQuery.addCriteria(filterCriteria);
+				query.addFilterQuery(filterQuery);
+			}
+		}
 		
 		//high light page 
 		HighlightPage<TbItem> page = solrTemplate.queryForHighlightPage(query,TbItem.class);
