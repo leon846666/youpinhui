@@ -129,6 +129,24 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 			}		
 		}
 		
+		// 1.5 pagination
+		Integer pageNo= (Integer)searchMap.get("pageNo");
+		if(pageNo==null){
+			pageNo=1;
+		}
+		
+		Integer pageSize= (Integer)searchMap.get("pageSize");
+		if(pageSize==null){
+			pageSize=20;
+		}
+		//set off set 
+		query.setOffset((pageNo-1)*pageSize);
+		// set size 
+		query.setRows(pageSize);
+		
+		
+		
+		
 		//high light page 
 		HighlightPage<TbItem> page = solrTemplate.queryForHighlightPage(query,TbItem.class);
 		List<HighlightEntry<TbItem>> listHighlight = page.getHighlighted();
@@ -144,6 +162,8 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		
 		}
 		map.put("rows", page.getContent());
+		map.put("totalPage", page.getTotalPages());
+		map.put("total", page.getTotalElements());
 		return map;
 		
 	}
