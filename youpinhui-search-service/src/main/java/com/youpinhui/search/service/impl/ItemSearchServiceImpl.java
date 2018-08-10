@@ -9,6 +9,7 @@ import java.util.Map;
 import org.hamcrest.core.Is;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
@@ -133,7 +134,7 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 			}		
 		}
 		
-		// 1.5 pagination
+		// 1.6 pagination
 		Integer pageNo= (Integer)searchMap.get("pageNo");
 		if(pageNo==null){
 			pageNo=1;
@@ -147,6 +148,24 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		query.setOffset((pageNo-1)*pageSize);
 		// set size 
 		query.setRows(pageSize);
+		
+		
+		// 1.7 sorting
+		String sortWay =(String) searchMap.get("sortWay");
+		String sortField=(String) searchMap.get("sortField");
+		
+		if(sortWay!=null&&!sortWay.equals("")){
+			if(sortWay.equals("ASC")){
+				 Sort sort = new Sort(Sort.Direction.ASC, "item_"+sortField);
+				 query.addSort(sort);
+			}
+			if(sortWay.equals("DESC")) {
+				Sort  sort = new Sort(Sort.Direction.DESC, "item_"+sortField);
+				 query.addSort(sort);
+			}
+			
+			
+		}
 		
 		
 		

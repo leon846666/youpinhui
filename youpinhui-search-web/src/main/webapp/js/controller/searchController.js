@@ -1,9 +1,16 @@
 app.controller("searchController",function($scope,searchService){
     
     //define a searchMap object
-    $scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':40};
+    $scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':40,'sortField':'','sortWay':''};
     //define a pagination label
   
+
+    $scope.searchBySort=function(sortField,sortWay){
+        $scope.searchMap.sortField=sortField;
+        $scope.searchMap.sortWay=sortWay;
+        $scope.search();
+
+    }
 
     $scope.search=function(){
         $scope.searchMap.pageNo=parseInt( $scope.searchMap.pageNo);
