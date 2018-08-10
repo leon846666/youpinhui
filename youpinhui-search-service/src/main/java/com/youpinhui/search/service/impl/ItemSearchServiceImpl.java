@@ -45,6 +45,10 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 	public Map<String, Object> search(Map searchMap) {
 		Map map=new HashMap();
 		
+		// white space
+		String string = (String)searchMap.get("keywords");
+		searchMap.put("keywords", string.replace(" ", ""));
+		
 		// 1. search items
 		map.putAll(searchList(searchMap));
 	
