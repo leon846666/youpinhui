@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.pojo.TbGoods;
+import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
 
 
@@ -76,7 +77,12 @@ public interface GoodsService {
 	 */
 	public void updateMarketable(Long [] ids);
 	
-	
+	/**
+	 * 
+	 * search SKU by SPU ids
+	 *  
+	 **/
+	public List<TbItem> searchItemListByGoodsIdListAndStatus(Long[] goodsIds,String status) ;
 	
 	
 }

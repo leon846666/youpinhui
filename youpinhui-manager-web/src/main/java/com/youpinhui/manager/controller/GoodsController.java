@@ -3,6 +3,7 @@ package com.youpinhui.manager.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +11,9 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
 import com.youpinhui.pojo.TbGoods;
+import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
+import com.youpinhui.search.service.ItemSearchService;
 import com.youpinhui.sellergoods.service.GoodsService;
 
 
@@ -23,8 +26,11 @@ import com.youpinhui.sellergoods.service.GoodsService;
 @RequestMapping("/goods")
 public class GoodsController {
 
-	@Reference
+	@Reference(timeout=100000)
 	private GoodsService goodsService;
+	
+	@Reference(timeout=100000)
+	private ItemSearchService itemSearchService;
 	
 	/**
 	 * test case find all
@@ -82,6 +88,7 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
+			itemSearchService.deleteByGoodsIds(ids);
 			return new Result(true, "delete success"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,6 +117,13 @@ public class GoodsController {
 	private Result updateStatus(Long [] ids,String status) {
 		try {
 			goodsService.updateStatus(ids, status);
+			
+			if("1".equals(status)){
+				List<TbItem> listItem = goodsService.searchItemListByGoodsIdListAndStatus(ids, status);
+				itemSearchService.importList(listItem);
+			}
+			
+			
 			return  new Result(true,"suceess");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

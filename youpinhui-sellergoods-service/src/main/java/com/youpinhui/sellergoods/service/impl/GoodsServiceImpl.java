@@ -1,4 +1,6 @@
 package com.youpinhui.sellergoods.service.impl;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -271,8 +273,6 @@ public class GoodsServiceImpl implements GoodsService {
 			goodsMapper.updateByPrimaryKey(goods);
 		}
 		
-		
-		
 	}
 
 	@Override
@@ -284,7 +284,26 @@ public class GoodsServiceImpl implements GoodsService {
 			goodsMapper.updateByPrimaryKey(goods);
 		}
 		
-		
 	}
+	
+	/*
+	 * 
+	 * search SKU by SPU ids
+	 *  
+	 **/
+	public List<TbItem> searchItemListByGoodsIdListAndStatus(Long[] goodsIds,String status) {
+		
+		System.out.println("111111111111111111111111111");
+		TbItemExample example = new TbItemExample();
+		com.youpinhui.pojo.TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(status);
+		criteria.andGoodsIdIn(Arrays.asList(goodsIds));
+		
+		
+		List<TbItem> listItem = itemMapper.selectByExample(example);
+		
+		return listItem;
+	}
+	
 	
 }

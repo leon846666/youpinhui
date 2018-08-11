@@ -21,6 +21,7 @@ import org.springframework.data.solr.core.query.Query;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleHighlightQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
+import org.springframework.data.solr.core.query.SolrDataQuery;
 import org.springframework.data.solr.core.query.result.GroupEntry;
 import org.springframework.data.solr.core.query.result.GroupPage;
 import org.springframework.data.solr.core.query.result.GroupResult;
@@ -239,6 +240,28 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 			map.put("specList", specList);
 		}
 		return map;
+	}
+
+
+	@Override
+	public void importList(List list) {
+		solrTemplate.saveBeans(list);
+		solrTemplate.commit();
+	}
+
+
+	@Override
+	public void deleteByGoodsIds(Long[] ids) {
+		// TODO Auto-generated method stub
+		
+		SolrDataQuery query = new SimpleQuery();
+		Criteria criteria = new Criteria("item_goodsid").in(ids);
+	
+		query.addCriteria(criteria);
+		solrTemplate.delete(query);
+		solrTemplate.commit();
+		
+		
 	}
 	
 }
