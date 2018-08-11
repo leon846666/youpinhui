@@ -158,7 +158,7 @@
 					<li class="tag" ng-if="searchMap.price!=''"  >价格:{{searchMap.price}}<i ng-click="removeSearchItem('price')" class="sui-icon icon-tb-close"></i></li>
 					<li class="tag" ng-repeat="(key,value) in searchMap.spec" >{{key}}:{{value}}<i   ng-click="removeSearchItem(key)" class="sui-icon icon-tb-close"></i></li>
 					<span ng-if="resultMap!=null">
-							共{{resultMap.total}}条结果
+							共{{resultMap.total}}条结果{{searchMap.brand==''}}+{{resultMap.brandList==null}}
 					</span>
 				</ul>
 				<div class="clearfix"></div>
@@ -174,7 +174,7 @@
 					</div>
 					<div class="fl ext"></div>
 				</div>
-				<div class="type-wrap logo"  ng-if="resultMap.brandList!=null &&searchMap.brand=='' ">
+				<div class="type-wrap logo"  ng-if="resultMap.brandList!=null &&searchMap.brand=='' &&keywordsIsBrand()==false ">
 					<div class="fl key brand">品牌</div>
 					<div class="value logos">
 						<ul class="logo-list">
@@ -266,7 +266,7 @@
 								<a href="#">销量</a>
 							</li>
 							<li>
-								<a href="#">新品</a>
+								<a href="#" ng-click="searchBySort('updatetime','DESC')">新品</a>
 							</li>
 							<li>
 								<a href="#">评价</a>

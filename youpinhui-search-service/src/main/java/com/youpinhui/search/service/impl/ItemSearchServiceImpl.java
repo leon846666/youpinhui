@@ -60,7 +60,7 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		
 		// 3. search brand & specfication 
 		// if user hasn't choose category ,use the first category in category List to search
-		if(category==""){
+		if(category.equals("")){
 			
 			if(categoryList.size()>0){
 				map.putAll(searchBrandAndSpecList(categoryList.get(0)));

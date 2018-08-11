@@ -2,9 +2,20 @@ app.controller("searchController",function($scope,searchService){
     
     //define a searchMap object
     $scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':40,'sortField':'','sortWay':''};
-    //define a pagination label
+    
   
+    //check if the keyword is a brand
+    $scope.keywordsIsBrand=function(){		
+        for(var i=0;i< $scope.resultMap.brandList.length;i++){			
+            if( $scope.searchMap.keywords.indexOf( $scope.resultMap.brandList[i].text )>=0  ){
+                return true;				
+            }			
+        }
+        return false;
+    }
 
+  
+    //define a pagination label
     $scope.searchBySort=function(sortField,sortWay){
         $scope.searchMap.sortField=sortField;
         $scope.searchMap.sortWay=sortWay;
@@ -17,6 +28,7 @@ app.controller("searchController",function($scope,searchService){
         searchService.search($scope.searchMap).success(
             function(response){
                    $scope.resultMap=response; 
+                   console.log($scope.resultMap.brandList);
                   // $scope.searchMap.pageNo=1;
                    buildPagination();
                   
