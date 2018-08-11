@@ -1,9 +1,14 @@
-app.controller("searchController",function($scope,searchService){
+app.controller("searchController",function($scope,$location,searchService){
     
     //define a searchMap object
     $scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':40,'sortField':'','sortWay':''};
     
-  
+    //load key word
+    $scope.loadKeywords=function(){
+    	$scope.searchMap.keywords=$location.search()['keywords'];
+    	$scope.search();
+    }
+    
     //check if the keyword is a brand
     $scope.keywordsIsBrand=function(){		
         for(var i=0;i< $scope.resultMap.brandList.length;i++){			
@@ -22,7 +27,7 @@ app.controller("searchController",function($scope,searchService){
         $scope.search();
 
     }
-
+    //search 
     $scope.search=function(){
         $scope.searchMap.pageNo=parseInt( $scope.searchMap.pageNo);
         searchService.search($scope.searchMap).success(
