@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
+import com.youpinhui.page.service.ItemPageService;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
@@ -132,4 +133,17 @@ public class GoodsController {
 		}
 		
 	}
+	
+	@Reference(timeout=40000)
+	private ItemPageService itemPageService;
+	
+	
+	/**
+	 * generate html for item  
+	 **/
+	@RequestMapping("/genHtml")
+	private void  geneHtml(Long goodsId) {
+			itemPageService.genItemHtml(goodsId);
+	}
+	
 }
