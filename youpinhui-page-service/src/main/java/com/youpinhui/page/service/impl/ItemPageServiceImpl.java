@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.youpinhui.mapper.TbGoodsDescMapper;
 import com.youpinhui.mapper.TbGoodsMapper;
+import com.youpinhui.mapper.TbItemCatMapper;
 import com.youpinhui.page.service.ItemPageService;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbGoodsDesc;
@@ -35,6 +37,9 @@ public class ItemPageServiceImpl implements ItemPageService{
 	@Autowired
 	private FreeMarkerConfigurer freeMarkerConfiger;
 	
+	@Autowired
+	private TbItemCatMapper itemCateMapper;
+	
 	@Value("${pagedir}")
 	private String pagedir;
 	
@@ -55,10 +60,19 @@ public class ItemPageServiceImpl implements ItemPageService{
 			TbGoods goods = tbGoodsMapper.selectByPrimaryKey(goodsId);
 			TbGoodsDesc goodsDesc = tbGoodsDescMapper.selectByPrimaryKey(goodsId);
 			
+			
+			String name1 = itemCateMapper.selectByPrimaryKey(goods.getCategory1Id()).getName();
+			String name2 = itemCateMapper.selectByPrimaryKey(goods.getCategory2Id()).getName();
+			String name3 = itemCateMapper.selectByPrimaryKey(goods.getCategory3Id()).getName();
+			
+			
+			
 			// put data into dataModel
 			dataModel.put("goods", goods);
 			dataModel.put("goodsDesc", goodsDesc);
-			
+			dataModel.put("cate1", name1);
+			dataModel.put("cate2", name2);
+			dataModel.put("cate3", name3);
 			// create file
 			Writer out = new FileWriter(pagedir+goodsId+".html");
 			

@@ -19,20 +19,22 @@
 
 <#include "head.ftl">
 <#assign imageList=goodsDesc.itemImages?eval>
-<#-- <#assign customAttributeList=goodsDesc.customAttributeItems?eval> -->
+<#assign customAttributeList=goodsDesc.customAttributeItems?eval>
+<#assign specificationList=goodsDesc.specificationItems?eval>
+
 <!--页面顶部 结束-->
 	<div class="py-container">
 		<div id="item">
 			<div class="crumb-wrap">
 				<ul class="sui-breadcrumb">
 					<li>
-						<a href="#">手机、数码、通讯</a>
+						<a href="#">${cate1}</a>
 					</li>
 					<li>
-						<a href="#">手机</a>
+						<a href="#">${cate2}</a>
 					</li>
 					<li>
-						<a href="#">Apple苹果</a>
+						<a href="#">${cate3}</a>
 					</li>
 					<li class="active">iphone 6S系类</li>
 				</ul>
@@ -112,63 +114,21 @@
 						</div>
 					</div>
 					<div class="clearfix choose">
-						<div id="specification" class="summary-wrap clearfix">
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择颜色</i>
+							<#list specificationList as spec>
+								<div id="specification" class="summary-wrap clearfix">
+									<dl>
+										<dt>
+											<div class="fl title">
+											<i>${spec.attributeName}</i>
+										</div>
+										</dt>
+											<#list spec.attributeValue as value>
+												<dd><a href="javascript:;">${value}</a></dd>
+											</#list>
+									</dl>
 								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">银色</a></dd>
-								<dd><a href="javascript:;">黑色</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>内存容量</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">16G<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">64G</a></dd>
-								<dd><a href="javascript:;" class="locked">128G</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择版本</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">公开版<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动版</a></dd>							
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>购买方式</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">官方标配<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动优惠版</a></dd>	
-								<dd><a href="javascript:;"  class="locked">电信优惠版</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>套　　装</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">保护套装<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;"  class="locked">充电套装</a></dd>	
-								
-							</dl>
-							
-							
+							</#list>
+						
 						</div>
 					
 						<div class="summary-wrap">
@@ -405,9 +365,9 @@
 						<div class="tab-content tab-wraped">
 							<div id="one" class="tab-pane active">
 								<ul class="goods-intro unstyled">
-								<#--	<#list customAttributeList as item>
-									<li>${item.text}：${item.value}</li>
-									</#list> -->
+									<#list customAttributeList as item>
+										<li>${item.text}：${item.value}</li>
+									</#list> 
 								</ul>
 								<div class="intro-detail">
 									${goodsDesc.introduction}
