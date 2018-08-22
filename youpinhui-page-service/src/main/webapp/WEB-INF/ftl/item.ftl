@@ -13,9 +13,13 @@
     <link rel="stylesheet" type="text/css" href="css/pages-item.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-zoom.css" />
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
+    <script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
+    
+    <script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/controller/itemController.js"></script>
 </head>
 
-<body>
+<body ng-app='youpinhui' ng-controller='itemController' >
 
 <#include "head.ftl">
 <#assign imageList=goodsDesc.itemImages?eval>
@@ -38,6 +42,7 @@
 					</li>
 					<li class="active">iphone 6S系类</li>
 				</ul>
+				{{specificationItems}}
 			</div>
 			<!--product-info-->
 			<div class="product-info">
@@ -123,7 +128,9 @@
 										</div>
 										</dt>
 											<#list spec.attributeValue as value>
-												<dd><a href="javascript:;">${value}</a></dd>
+												<dd><a href="javascript:;" 
+												class=" {{isSelected('${spec.attributeName}','${value}') ? 'selected':''}} "
+												ng-click="selectSpecification('${spec.attributeName}','${value}')">${value}</a></dd>
 											</#list>
 									</dl>
 								</div>
@@ -135,9 +142,9 @@
 							<div class="fl title">
 								<div class="control-group">
 									<div class="controls">
-										<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
-										<a href="javascript:void(0)" class="increment plus">+</a>
-										<a href="javascript:void(0)" class="increment mins">-</a>
+										<input autocomplete="off" type="text" value="1" ng-model="number" minnum="1" class="itxt" />
+										<a href="javascript:void(0)" class="increment plus" ng-click="addNumber(1)" >+</a>
+										<a href="javascript:void(0)" class="increment mins"  ng-click="addNumber(-1)" >-</a>
 									</div>
 								</div>
 							</div>
