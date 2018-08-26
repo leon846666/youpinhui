@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -15,9 +16,13 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.youpinhui.mapper.TbGoodsDescMapper;
 import com.youpinhui.mapper.TbGoodsMapper;
 import com.youpinhui.mapper.TbItemCatMapper;
+import com.youpinhui.mapper.TbItemMapper;
 import com.youpinhui.page.service.ItemPageService;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbGoodsDesc;
+import com.youpinhui.pojo.TbItem;
+import com.youpinhui.pojo.TbItemExample;
+import com.youpinhui.pojo.TbItemExample.Criteria;
 
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
@@ -39,6 +44,9 @@ public class ItemPageServiceImpl implements ItemPageService{
 	
 	@Autowired
 	private TbItemCatMapper itemCateMapper;
+	
+	@Autowired
+	private TbItemMapper itemMapper;
 	
 	@Value("${pagedir}")
 	private String pagedir;
@@ -66,6 +74,15 @@ public class ItemPageServiceImpl implements ItemPageService{
 			String name3 = itemCateMapper.selectByPrimaryKey(goods.getCategory3Id()).getName();
 			
 			
+			// get SKU list data
+			TbItemExample example = new TbItemExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andGoodsIdEqualTo(goodsId); //SPU ID
+			criteria.andStatusEqualTo("1");
+			example.setOrderByClause("is_default desc");
+			
+			List<TbItem> itemList = itemMapper.selectByExample(example);
+			
 			
 			// put data into dataModel
 			dataModel.put("goods", goods);
@@ -73,6 +90,9 @@ public class ItemPageServiceImpl implements ItemPageService{
 			dataModel.put("cate1", name1);
 			dataModel.put("cate2", name2);
 			dataModel.put("cate3", name3);
+			dataModel.put("itemList", itemList);
+			
+			
 			// create file
 			Writer out = new FileWriter(pagedir+goodsId+".html");
 			

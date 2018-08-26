@@ -17,9 +17,24 @@
     
     <script type="text/javascript" src="js/base.js"></script>
 	<script type="text/javascript" src="js/controller/itemController.js"></script>
+	
+	<script>
+	
+	var skuList=[
+		
+			<#list itemList as item>
+				{
+					id: ${item.id?c},
+					title:'${item.title}',
+					price:${item.price?c},
+					spec:${item.spec}
+				},
+			</#list>
+		];
+	</script>
 </head>
 
-<body ng-app='youpinhui' ng-controller='itemController' >
+<body ng-app='youpinhui' ng-controller='itemController' ng-init="loadSku()" >
 
 <#include "head.ftl">
 <#assign imageList=goodsDesc.itemImages?eval>
@@ -72,7 +87,7 @@
 				</div>
 				<div class="fr itemInfo-wrap">
 					<div class="sku-name">
-						<h4>${goods.goodsName}</h4>
+						<h4>{{sku.title}}</h4>
 					</div>
 					<div class="news"><span>${goods.caption}</span></div>
 					<div class="summary">
@@ -82,7 +97,7 @@
 							</div>
 							<div class="fl price">
 								<i>¥</i>
-								<em>${goods.price}</em>
+								<em>{{sku.price}}</em>
 								<span>降价通知</span>
 							</div>
 							<div class="fr remark">
