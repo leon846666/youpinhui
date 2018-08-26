@@ -66,7 +66,7 @@ public class GoodsController {
 			return new Result(true, "update success");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "update®æfailed");
+			return new Result(false, "updateï¿½ï¿½failed");
 		}
 	}	
 	
@@ -120,8 +120,20 @@ public class GoodsController {
 			goodsService.updateStatus(ids, status);
 			
 			if("1".equals(status)){
+				
+				// ***** import into solr
+				// 1.get the data need to be imported
 				List<TbItem> listItem = goodsService.searchItemListByGoodsIdListAndStatus(ids, status);
+				// 2.import into solr
 				itemSearchService.importList(listItem);
+				
+				// ***** generate goods html page
+				// for loop to get each goodsId
+				for (Long goodsId : ids) {
+					// generate
+					itemPageService.genItemHtml(goodsId);
+				}
+				
 			}
 			
 			

@@ -291,6 +291,7 @@
 		<module>youpinhui-search-web</module>
 		<module>youpinhui-page-interface</module>
 		<module>youpinhui-page-service</module>
+		<module>youpinhui-page-web</module>
 	</modules>
   
 </project>
