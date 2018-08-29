@@ -88,16 +88,26 @@ public class GoodsController {
 		return goodsService.findOne(id);		
 	}
 	
+	@Autowired
+	private Destination queueSolrDeleteDestination;
+	
 	/**
 	 * batch delete
 	 * @param ids
 	 * @return
 	 */
 	@RequestMapping("/delete")
-	public Result delete(Long [] ids){
+	public Result delete(final Long [] ids){
 		try {
 			goodsService.delete(ids);
-			
+			jmsTemplate.send(queueSolrDeleteDestination,new MessageCreator() {
+				
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+					// TODO Auto-generated method stub
+					return session.createObjectMessage(ids);
+				}
+			});
 			//itemSearchService.deleteByGoodsIds(ids);
 			
 			return new Result(true, "delete success"); 
