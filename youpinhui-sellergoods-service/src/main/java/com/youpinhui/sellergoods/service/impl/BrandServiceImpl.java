@@ -35,6 +35,7 @@ public class BrandServiceImpl implements BrandService{
 
 	@Override
 	public PageResult findPage(int page, int size) {
+		System.out.println("dddddddddddddddddddd");
 		PageHelper.startPage(page, size);
 		Page<TbBrand> pageTbBrand = (Page<TbBrand> ) tbBrandMapper.selectByExample(null);
 		

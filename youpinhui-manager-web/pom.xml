@@ -11,6 +11,12 @@
   
   
    <dependencies>
+   
+   <dependency>
+		<groupId>org.apache.activemq</groupId>
+		<artifactId>activemq-client</artifactId>
+		<version>5.13.4</version>
+	 </dependency>
     <!-- Spring -->
 	<dependency>
 		<groupId>org.springframework</groupId>
@@ -111,11 +117,7 @@
 		<artifactId>youpinhui-common</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
-	<dependency>
-		<groupId>com.youpinhui</groupId>
-		<artifactId>youpinhui-search-interface</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
+	
 	<dependency>
 		<groupId>com.youpinhui</groupId>
 		<artifactId>youpinhui-page-interface</artifactId>

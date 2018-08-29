@@ -3,18 +3,25 @@ package com.youpinhui.manager.controller;
 
 import java.util.List;
 
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
 import com.youpinhui.page.service.ItemPageService;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
-import com.youpinhui.search.service.ItemSearchService;
 import com.youpinhui.sellergoods.service.GoodsService;
 
 
@@ -30,8 +37,9 @@ public class GoodsController {
 	@Reference(timeout=100000)
 	private GoodsService goodsService;
 	
-	@Reference(timeout=100000)
+	/*@Reference(timeout=100000)
 	private ItemSearchService itemSearchService;
+	*/
 	
 	/**
 	 * test case find all
@@ -89,7 +97,9 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
-			itemSearchService.deleteByGoodsIds(ids);
+			
+			//itemSearchService.deleteByGoodsIds(ids);
+			
 			return new Result(true, "delete success"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,6 +120,13 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
+	
+	@Autowired
+	private JmsTemplate jmsTemplate;
+	
+	@Autowired 
+	private Destination queueSolrDestination;
+	
 	/**
 	 * 
 	 * update status
@@ -124,8 +141,20 @@ public class GoodsController {
 				// ***** import into solr
 				// 1.get the data need to be imported
 				List<TbItem> listItem = goodsService.searchItemListByGoodsIdListAndStatus(ids, status);
+				
 				// 2.import into solr
-				itemSearchService.importList(listItem);
+				//itemSearchService.importList(listItem);
+				final String jsonString = JSON.toJSONString(listItem);
+				
+				jmsTemplate.send(queueSolrDestination,new MessageCreator() {
+					
+					@Override
+					public Message createMessage(Session session) throws JMSException {
+						// TODO Auto-generated method stub
+						return session.createTextMessage(jsonString);
+					}
+				});
+				
 				
 				// ***** generate goods html page
 				// for loop to get each goodsId
