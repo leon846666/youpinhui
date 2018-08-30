@@ -293,7 +293,7 @@ public class GoodsServiceImpl implements GoodsService {
 	 **/
 	public List<TbItem> searchItemListByGoodsIdListAndStatus(Long[] goodsIds,String status) {
 		
-		System.out.println("111111111111111111111111111");
+		
 		TbItemExample example = new TbItemExample();
 		com.youpinhui.pojo.TbItemExample.Criteria criteria = example.createCriteria();
 		criteria.andStatusEqualTo(status);

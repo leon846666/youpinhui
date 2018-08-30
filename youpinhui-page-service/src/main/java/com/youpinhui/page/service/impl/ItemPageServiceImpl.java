@@ -10,9 +10,10 @@ import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import com.alibaba.dubbo.config.annotation.Service;
+
 import com.youpinhui.mapper.TbGoodsDescMapper;
 import com.youpinhui.mapper.TbGoodsMapper;
 import com.youpinhui.mapper.TbItemCatMapper;
@@ -83,7 +84,6 @@ public class ItemPageServiceImpl implements ItemPageService{
 			
 			List<TbItem> itemList = itemMapper.selectByExample(example);
 			
-			
 			// put data into dataModel
 			dataModel.put("goods", goods);
 			dataModel.put("goodsDesc", goodsDesc);
@@ -92,23 +92,21 @@ public class ItemPageServiceImpl implements ItemPageService{
 			dataModel.put("cate3", name3);
 			dataModel.put("itemList", itemList);
 			
-			
 			// create file
 			Writer out = new FileWriter(pagedir+goodsId+".html");
-			
-			
-			
 			
 			//out put 
 			template.process(dataModel, out);
 			
 			out.close();
+			return true;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
+	
 	}
 
 }

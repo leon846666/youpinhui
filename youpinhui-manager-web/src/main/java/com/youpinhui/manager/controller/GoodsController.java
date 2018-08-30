@@ -18,7 +18,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
-import com.youpinhui.page.service.ItemPageService;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
@@ -135,8 +134,10 @@ public class GoodsController {
 	private JmsTemplate jmsTemplate;
 	
 	@Autowired 
-	private Destination queueSolrDestination;
+	private Destination queueSolrDestination;  // a destination for  import solr (Queue)
 	
+	@Autowired
+	private Destination topicPageDestination;  // a destination for generate goods detail page(Topic)
 	/**
 	 * 
 	 * update status
@@ -168,9 +169,17 @@ public class GoodsController {
 				
 				// ***** generate goods html page
 				// for loop to get each goodsId
-				for (Long goodsId : ids) {
+				for (final Long goodsId : ids) {
 					// generate
-					itemPageService.genItemHtml(goodsId);
+					//itemPageService.genItemHtml(goodsId);
+					jmsTemplate.send(topicPageDestination,new MessageCreator() {
+						
+						@Override
+						public Message createMessage(Session session) throws JMSException {
+							// TODO Auto-generated method stub
+							return session.createTextMessage(goodsId+"");
+						}
+					});
 				}
 				
 			}
@@ -185,8 +194,6 @@ public class GoodsController {
 		
 	}
 	
-	@Reference(timeout=40000)
-	private ItemPageService itemPageService;
 	
 	
 	/**
@@ -194,7 +201,7 @@ public class GoodsController {
 	 **/
 	@RequestMapping("/genHtml")
 	private void  geneHtml(Long goodsId) {
-			itemPageService.genItemHtml(goodsId);
+			//itemPageService.genItemHtml(goodsId);
 	}
 	
 }
