@@ -109,6 +109,19 @@ public class GoodsController {
 			});
 			//itemSearchService.deleteByGoodsIds(ids);
 			
+			// delete pages from each server;
+			jmsTemplate.send(topicPageDeleteDestination,new MessageCreator() {
+				
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+					// TODO Auto-generated method stub
+					return session.createObjectMessage(ids);
+				}
+			});
+			
+			
+			
+			
 			return new Result(true, "delete success"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -138,6 +151,9 @@ public class GoodsController {
 	
 	@Autowired
 	private Destination topicPageDestination;  // a destination for generate goods detail page(Topic)
+	@Autowired
+	private Destination topicPageDeleteDestination; // a destination for deleting the static pages when a goods is deleted(Topic)
+	
 	/**
 	 * 
 	 * update status

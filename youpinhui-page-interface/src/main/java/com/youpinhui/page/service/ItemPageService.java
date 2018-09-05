@@ -8,4 +8,14 @@ public interface ItemPageService {
 	 * 
 	 */
 	public boolean genItemHtml(Long goodsId);		
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * delete item detail page 
+	 */
+	
+	public boolean deleteItemHtml(Long[] goodsIds);
 }

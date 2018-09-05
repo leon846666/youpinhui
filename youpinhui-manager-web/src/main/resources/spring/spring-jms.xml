@@ -35,9 +35,14 @@
 	    <constructor-arg value="youpinhui_queue_solr_delete"/>  
 	</bean>    
 	
-	<!-- 这个是订阅模式  文本信息  -->
+	<!-- 这个是订阅模式  文本信息  生成 -->
 	<bean id="topicPageDestination" class="org.apache.activemq.command.ActiveMQTopic">  
 	    <constructor-arg value="youpinhui_topic_page"/>  
+	</bean>  
+	
+	<!-- 这个是订阅模式  文本信息  删除-->
+	<bean id="topicPageDeleteDestination" class="org.apache.activemq.command.ActiveMQTopic">  
+	    <constructor-arg value="youpinhui_topic_page_delete"/>  
 	</bean>  
 	
 </beans>

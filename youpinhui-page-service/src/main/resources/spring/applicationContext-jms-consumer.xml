@@ -17,7 +17,7 @@
 	    <property name="targetConnectionFactory" ref="targetConnectionFactory"/>  
 	</bean>  
 	
-    <!--这个是广播目的地 page 形式-->  
+    <!--这个是广播目的地  生成 page 形式-->  
 	<bean id="topicPageDestination" class="org.apache.activemq.command.ActiveMQTopic">  
 	    <constructor-arg value="youpinhui_topic_page"/>  
 	</bean>    
@@ -29,4 +29,15 @@
 		<property name="messageListener" ref="pageListener" />
 	</bean>
 	
+	  <!--这个是广播目的地  删除 page 形式-->  
+	<bean id="topicPageDeleteDestination" class="org.apache.activemq.command.ActiveMQTopic">  
+	    <constructor-arg value="youpinhui_topic_page_delete"/>  
+	</bean>    
+	
+	<!-- 消息监听容器 -->
+	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="destination" ref="topicPageDeleteDestination" />
+		<property name="messageListener" ref="pageDeleteListener" />
+	</bean>
 </beans>
