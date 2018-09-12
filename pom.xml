@@ -292,6 +292,9 @@
 		<module>youpinhui-page-interface</module>
 		<module>youpinhui-page-service</module>
 		<module>youpinhui-page-web</module>
+		<module>youpinhui-user-interface</module>
+		<module>youpinhui-user-service</module>
+		<module>youpinhui-user-web</module>
 	</modules>
   
 </project>
