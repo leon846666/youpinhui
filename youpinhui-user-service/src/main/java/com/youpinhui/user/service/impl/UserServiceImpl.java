@@ -1,6 +1,9 @@
 package com.youpinhui.user.service.impl;
 
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -48,7 +51,16 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void add(TbUser user) {
-		userMapper.insert(user);		
+		
+		user.setCreated(new Date());//register date
+		user.setUpdated(new Date());//update date
+		user.setSourceType("1");// user source 
+		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+		
+		userMapper.insert(user);	
+		
+		
+		
 	}
 
 	
