@@ -9,6 +9,7 @@ import com.youpinhui.entity.PageResult;
 import com.youpinhui.entity.Result;
 import com.youpinhui.pojo.TbUser;
 import com.youpinhui.user.service.UserService;
+import com.youpinhui.utils.PhoneFormatCheckUtils;
 
 /**
  * controller
@@ -22,6 +23,23 @@ public class UserController {
 	@Reference
 	private UserService userService;
 	
+	
+	@RequestMapping("/sendVerifiCode")
+	public Result sendVerifiCode(String phone) {
+		System.out.println("  number : "+phone);
+		if( !PhoneFormatCheckUtils.isPhoneLegal(phone)){
+			return new Result(false,"your phone number is not in a correct format");
+		}
+		
+		try {
+			userService.createVerifiCode(phone);
+			return new Result(true,"success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false,"failed");
+		}
+	}
 	/**
 	 * return all 
 	 * @return
@@ -47,7 +65,12 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbUser user){
+	public Result add(@RequestBody TbUser user,String verifiCode){
+		boolean result= userService.checkVerificationCode(user.getPhone(),verifiCode);
+		if(!result){
+			return new Result(false, "verification code is not matched");
+		}
+		
 		try {
 			userService.add(user);
 			return new Result(true, "增加成功");

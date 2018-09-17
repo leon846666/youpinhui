@@ -13,11 +13,27 @@ import com.youpinhui.pojo.TbUser;
  *
  */
 public interface UserService {
-
+	
+	
+	/**
+	 * create verification code
+	 *  
+	 */
+	public void createVerifiCode(String phoneNum) ;
+	
+	/**
+	 * check verification code 
+	 * @return
+	 */
+	
+	
+	public boolean checkVerificationCode(String phone,String code);
+	
 	/**
 	 * find all
 	 * @return
 	 */
+	
 	public List<TbUser> findAll();
 	
 	

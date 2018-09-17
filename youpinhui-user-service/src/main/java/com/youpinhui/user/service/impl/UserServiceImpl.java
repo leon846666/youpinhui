@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -28,6 +30,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private TbUserMapper userMapper;
 	
+	@Autowired
+	private RedisTemplate redisTemplate;
 	/**
 	 * find all
 	 */
@@ -149,6 +153,31 @@ public class UserServiceImpl implements UserService {
 		
 		Page<TbUser> page= (Page<TbUser>)userMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
+	}
+
+	@Override
+	public void createVerifiCode(String phoneNum) {
+		// 1.generate a code
+		String code=(long)(Math.random()*1000000)+"";
+		
+		// 2. put the code into redis
+		redisTemplate.boundHashOps("verifiCode").put(phoneNum, code);
+		
+		System.out.println("code : "+code);
+		// 3. send the code to activeMQ
+	}
+
+	@Override
+	public boolean checkVerificationCode(String phone,String code) {
+		// TODO Auto-generated method stub
+		String codeInRedis =(String) redisTemplate.boundHashOps("verifiCode").get(phone);
+		if(codeInRedis==null){
+			return false;
+		}
+		if(!codeInRedis.equals(code)){
+			return false;
+		}
+		return true;
 	}
 	
 }
