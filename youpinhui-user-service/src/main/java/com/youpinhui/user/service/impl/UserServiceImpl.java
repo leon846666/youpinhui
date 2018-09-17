@@ -1,13 +1,26 @@
 package com.youpinhui.user.service.impl;
 
+import java.security.KeyStore.PrivateKeyEntry;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.youpinhui.entity.PageResult;
@@ -32,6 +45,19 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private RedisTemplate redisTemplate;
+	
+	@Autowired
+	private JmsTemplate jmsTemplage;
+	
+	@Autowired
+	private Destination destination;
+	
+	@Value("${templateCode}")
+	private String templateCode;
+	
+	@Value("${signName}")
+	private String signName;
+	
 	/**
 	 * find all
 	 */
@@ -156,15 +182,35 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void createVerifiCode(String phoneNum) {
+	public void createVerifiCode(final String phoneNum) {
 		// 1.generate a code
-		String code=(long)(Math.random()*1000000)+"";
+		final String code=(long)(Math.random()*1000000)+"";
 		
 		// 2. put the code into redis
 		redisTemplate.boundHashOps("verifiCode").put(phoneNum, code);
 		
 		System.out.println("code : "+code);
 		// 3. send the code to activeMQ
+		jmsTemplage.send(destination,new MessageCreator() {
+			
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				
+			//	phoneNum"), map.get("templateCode"), map.get("signName"), map.get("code"));
+				MapMessage message = session.createMapMessage();
+				message.setString("phoneNum", phoneNum);
+				message.setString("templateCode", "SMS_144451219");
+			
+				message.setString("signName", "优品惠");
+				
+				
+				message.setString("code", code);
+				
+				return message;
+			}
+		});
+		
+		
 	}
 
 	@Override
