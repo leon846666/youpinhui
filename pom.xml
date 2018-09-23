@@ -295,6 +295,9 @@
 		<module>youpinhui-user-interface</module>
 		<module>youpinhui-user-service</module>
 		<module>youpinhui-user-web</module>
+		<module>youpinhui-cart-interface</module>
+		<module>youpinhui-cart-service</module>
+		<module>youpinhui-cart-web</module>
 	</modules>
   
 </project>
