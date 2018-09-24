@@ -7,7 +7,7 @@
         <dependent-module archiveName="youpinhui-common-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youpinhui-common/youpinhui-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="youpinhui-user-interface-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youpinhui-user-interface/youpinhui-user-interface">
+        <dependent-module archiveName="youpinhui-cart-interface-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youpinhui-cart-interface/youpinhui-cart-interface">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youpinhui-pojo-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youpinhui-pojo/youpinhui-pojo">

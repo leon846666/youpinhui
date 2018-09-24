@@ -123,7 +123,7 @@
 	</dependency>
 	<dependency>
 		<groupId>com.youpinhui</groupId>
-		<artifactId>youpinhui-user-interface</artifactId>
+		<artifactId>youpinhui-cart-interface</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
     </dependencies>
