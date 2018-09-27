@@ -1,5 +1,6 @@
 package com.youpinhui.cart.controller;
 
+import java.security.SecureClassLoader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +35,16 @@ public class CartController {
 	
 	@RequestMapping("/findCartList")
 	public List<Cart> findCartList() {
+		
+		// current login user
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("login user :"+name);
+		if("anonymousUser".equals(name)){ // not logtin
+			
+		}else{// login
+			
+		}
+		
 		// cookie only can save string value(json value);
 		String cartListString = CookieUtil.getCookieValue(request, "cartList","UTF-8");
 		
